@@ -1,0 +1,24 @@
+{
+  "rules": [
+    {
+      "field": "cgpa",
+      "operator": ">=",
+      "value": 7,
+      "message": "CGPA must be at least {value}"
+    },
+    {
+      "field": "passoutYear",
+      "operator": "BETWEEN",
+      "min": 2023,
+      "max": 2025,
+      "message": "Passout year must be between {min} and {max}"
+    },
+    {
+      "field": "historyOfArrears",
+      "operator": "<=",
+      "value": 0,
+      "message": "Number of arrears must be at most {value}"
+    }
+  ],
+  "logic": "AND"
+}

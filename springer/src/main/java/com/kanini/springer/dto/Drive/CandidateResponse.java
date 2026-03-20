@@ -1,0 +1,38 @@
+package com.kanini.springer.dto.Drive;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+/**
+ * Response DTO for candidate data
+ */
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class CandidateResponse {
+    
+    private Long candidateId;
+    private Long instituteId;
+    private String instituteName;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private String mobile;
+    private BigDecimal cgpa;
+    private Integer historyOfArrears;
+    private String degree;
+    private String department;
+    private Integer passoutYear;
+    private LocalDate dateOfBirth;
+    private String aadhaarNumber;
+    private Boolean isEligible;
+    private String reason;
+    private String status;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+}
