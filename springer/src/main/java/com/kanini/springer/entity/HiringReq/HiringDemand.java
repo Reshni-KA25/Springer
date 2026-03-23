@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.kanini.springer.entity.Drive.Drive;
 import com.kanini.springer.entity.Drive.RequisitionSkill;
 import com.kanini.springer.entity.enums.Enums.ApprovalStatus;
 import com.kanini.springer.entity.enums.Enums.BusinessUnit;
@@ -59,8 +58,6 @@ public class HiringDemand {
     @OneToMany(mappedBy = "demand", cascade = CascadeType.ALL)
     private List<RequisitionSkill> requisitionSkills;
     
-    @OneToMany(mappedBy = "demand", cascade = CascadeType.ALL)
-    private List<Drive> drives;
     
     @PrePersist
     protected void onCreate() {

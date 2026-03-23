@@ -121,6 +121,26 @@ public class OverrideServiceImpl implements IOverrideService {
     }
     
     @Override
+    public List<ManualOverrideResponse> getOverridesByEntityTypeAndEntityId(String entityType, Long entityId) {
+        if (entityType == null || entityType.isBlank()) {
+            throw new RuntimeException("Entity type is required");
+        }
+        if (entityId == null) {
+            throw new RuntimeException("Entity ID is required");
+        }
+        
+        OverrideEntityType overrideEntityType;
+        try {
+            overrideEntityType = OverrideEntityType.valueOf(entityType);
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException("Invalid entity type: " + entityType);
+        }
+        
+        List<ManualOverride> overrides = overrideRepository.findByEntityTypeAndEntityIdWithUser(overrideEntityType, entityId);
+        return mapper.toResponseList(overrides);
+    }
+    
+    @Override
     public List<ManualOverrideResponse> getOverridesByUserId(Long userId) {
         if (userId == null) {
             throw new RuntimeException("User ID is required");

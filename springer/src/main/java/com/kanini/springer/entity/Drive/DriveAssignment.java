@@ -43,7 +43,7 @@ public class DriveAssignment {
     private Application application;
     
     @Enumerated(EnumType.STRING)
-    private AssignmentStatus status; // PLANNED, DRAFT, SELECTED, REJECTED
+    private AssignmentStatus status; // PLANNED, DRAFT, SELECTED, REJECTED, CANCELLED
     
     private Boolean isActive; // true=current assignment
     

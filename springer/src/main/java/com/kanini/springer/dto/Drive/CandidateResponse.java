@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * Response DTO for candidate data
@@ -19,6 +20,9 @@ public class CandidateResponse {
     private Long candidateId;
     private Long instituteId;
     private String instituteName;
+    private String state;
+    private String city;
+    private Long cycleId;
     private String firstName;
     private String lastName;
     private String email;
@@ -35,4 +39,5 @@ public class CandidateResponse {
     private String status;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private List<String> skillNames; // List of skill names
 }

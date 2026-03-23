@@ -13,6 +13,5 @@ import lombok.NoArgsConstructor;
 public class CandidateStatusUpdateRequest {
     
     private String status; // CandidateStatus enum string
-    private String reason; // Optional reason for status change
     private Long updatedBy; // User ID who updated the status
 }

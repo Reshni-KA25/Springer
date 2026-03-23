@@ -92,7 +92,8 @@ public class Enums {
         PLANNED,
         DRAFT,
         SELECTED,
-        REJECTED
+        REJECTED,
+        CANCELLED
     }
 
     // Evaluation status

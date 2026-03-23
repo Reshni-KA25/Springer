@@ -1,5 +1,10 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
 import DashboardTAR from './components/TA_Recruiter/DashboardTAR'
+import InstitutesList from './components/TA_Recruiter/Institutes/InstitutesList'
+import InstitutesDetails from './components/TA_Recruiter/Institutes/InstitutesDetails'
+import AddInstitute from './components/TA_Recruiter/Institutes/AddInstitute'
+import CandidateList from './components/TA_Recruiter/Candidates/CandidateList'
+import CandidateDetails from './components/TA_Recruiter/Candidates/CandidateDetails'
 import Page404 from './pages/Page404'
 import Unauthorized from './pages/Unauthorized'
 import DashboardHM from './components/HiringManager/DashboardHM'
@@ -9,6 +14,7 @@ import AdminDashboard from './components/Admin/AdminDashboard'
 import ProtectedRoute from './auth/ProtectedRoutes'
 import DashboardLayout from './components/Common/DashboardLayout'
 import LoginRedirect from './components/Authentication/LoginRedirect'
+import AddCandidates from './components/TA_Recruiter/Candidates/AddCandidates'
 import './App.css'
 
 function App() {
@@ -29,6 +35,12 @@ function App() {
       {/* Protected routes for TA_RECRUITER */}
       <Route element={<ProtectedRoute allowedRoles={['TA_RECRUITER']} />}>
         <Route path="/ta-recruiter/dashboard" element={<DashboardTAR />} />
+        <Route path="/ta-recruiter/institutes" element={<InstitutesList />} />
+        <Route path="/ta-recruiter/institutes/add" element={<AddInstitute />} />
+        <Route path="/ta-recruiter/institutes/:instituteId" element={<InstitutesDetails />} />
+        <Route path="/ta-recruiter/candidates" element={<CandidateList />} />
+        <Route path="/ta-recruiter/candidates/add" element={<AddCandidates />} />
+        <Route path="/ta-recruiter/candidates/:id" element={<CandidateDetails />} />
       </Route>
       
       {/* Protected routes for HIRING_MANAGER */}
@@ -49,6 +61,7 @@ function App() {
       {/* 404 Not Found */}
       <Route path="*" element={<Page404 />} />
     </Routes>
+    
   )
 }
 

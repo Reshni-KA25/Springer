@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.kanini.springer.entity.HiringReq.HiringCycle;
-import com.kanini.springer.entity.HiringReq.HiringDemand;
+
 import com.kanini.springer.entity.HiringReq.Institute;
 import com.kanini.springer.entity.HiringReq.User;
 import com.kanini.springer.entity.enums.Enums.DriveMode;
@@ -23,7 +23,6 @@ import com.kanini.springer.entity.enums.Enums.DriveStatus;
 @Table(name = "drive_schedule",
     indexes = {
         @Index(name = "idx_drive_cycle_id", columnList = "cycle_id"),
-        @Index(name = "idx_drive_demand_id", columnList = "demand_id"),
         @Index(name = "idx_drive_institute_id", columnList = "institute_id")
     }
 )
@@ -40,9 +39,7 @@ public class Drive {
     @JoinColumn(name = "cycle_id")
     private HiringCycle cycle;
     
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "demand_id")
-    private HiringDemand demand;
+
     
     private String driveName;
     

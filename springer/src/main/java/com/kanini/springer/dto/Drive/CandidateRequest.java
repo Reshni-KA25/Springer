@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 /**
  * Request DTO for creating/updating candidates
@@ -16,6 +17,7 @@ import java.time.LocalDate;
 public class CandidateRequest {
     
     private Long instituteId; // nullable for off-campus candidates
+    private Long cycleId; // nullable for candidates not yet assigned to a cycle
     private String firstName;
     private String lastName;
     private String email;
@@ -27,7 +29,6 @@ public class CandidateRequest {
     private Integer passoutYear;
     private LocalDate dateOfBirth;
     private String aadhaarNumber;
-    private Boolean isEligible;
-    private String reason; // Required when eligibility overridden
-    private String status; // CandidateStatus enum string
+    private List<Long> skillIds; // List of skill IDs from Skills master table
 }
+

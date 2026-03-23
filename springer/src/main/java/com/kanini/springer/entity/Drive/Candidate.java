@@ -14,6 +14,7 @@ import java.util.List;
 import com.kanini.springer.entity.Academy.BatchAllocation;
 import com.kanini.springer.entity.DocumentProcessing.DocumentSubmission;
 import com.kanini.springer.entity.DocumentProcessing.OfferLetter;
+import com.kanini.springer.entity.HiringReq.HiringCycle;
 import com.kanini.springer.entity.HiringReq.Institute;
 import com.kanini.springer.entity.enums.Enums.CandidateStatus;
 
@@ -29,6 +30,7 @@ import com.kanini.springer.entity.enums.Enums.CandidateStatus;
     },
     indexes = {
         @Index(name = "idx_candidate_institute_id", columnList = "institute_id"),
+        @Index(name = "idx_candidate_cycle_id", columnList = "cycle_id"),
         @Index(name = "idx_candidate_status", columnList = "status"),
         @Index(name = "idx_candidate_passout_year", columnList = "passoutYear")
     }
@@ -45,6 +47,10 @@ public class Candidate {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "institute_id")
     private Institute institute; // nullable if off-campus pool
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cycle_id")
+    private HiringCycle cycle;
 
     @NotBlank(message = "Candidate first name is required")
     @Pattern(regexp = "^[a-zA-Z\\s.]+$", message = "First name should contain only letters")

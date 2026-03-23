@@ -2,6 +2,7 @@ package com.kanini.springer.service.Hiring.impl;
 
 import com.kanini.springer.dto.Hiring.HiringCycleRequest;
 import com.kanini.springer.dto.Hiring.HiringCycleResponse;
+import com.kanini.springer.dto.Hiring.HiringCycleSummaryResponse;
 import com.kanini.springer.entity.HiringReq.HiringCycle;
 import com.kanini.springer.entity.enums.Enums.CycleStatus;
 import com.kanini.springer.mapper.Hiring.HiringCycleMapper;
@@ -66,6 +67,18 @@ public class HiringCycleServiceImpl implements IHiringCycleService {
     public List<HiringCycleResponse> getAllCycles() {
         return cycleRepository.findAll().stream()
                 .map(mapper::toResponse)
+                .collect(Collectors.toList());
+    }
+    
+    @Override
+    public List<HiringCycleSummaryResponse> getAllCycleSummaries() {
+        return cycleRepository.findAll().stream()
+                .map(cycle -> new HiringCycleSummaryResponse(
+                    cycle.getCycleId(),
+                    cycle.getCycleYear(),
+                    cycle.getCycleName(),
+                    cycle.getStatus().toString()
+                ))
                 .collect(Collectors.toList());
     }
     

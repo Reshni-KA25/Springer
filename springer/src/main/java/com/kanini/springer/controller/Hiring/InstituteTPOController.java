@@ -55,7 +55,7 @@ public class InstituteTPOController {
         
         BulkInsertResponse<InstituteContactResponse> response = tpoService.bulkCreateContacts(instituteId, requests);
         
-        if (!response.getErrors().isEmpty()) {
+        if (!response.getErrorMessages().isEmpty()) {
             // Validation errors occurred - no records inserted
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(new ApiResponse<>(false, "Validation failed. No records inserted.", response));
@@ -75,7 +75,7 @@ public class InstituteTPOController {
         
         BulkInsertResponse<InstituteContactResponse> response = tpoService.bulkCreateAllContacts(requests);
         
-        if (!response.getErrors().isEmpty()) {
+        if (!response.getErrorMessages().isEmpty()) {
             // Validation errors occurred - no records inserted
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(new ApiResponse<>(false, "Validation failed. No records inserted.", response));

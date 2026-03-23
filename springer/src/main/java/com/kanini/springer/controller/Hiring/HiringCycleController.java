@@ -3,6 +3,7 @@ package com.kanini.springer.controller.Hiring;
 import com.kanini.springer.dto.Authentication.ApiResponse;
 import com.kanini.springer.dto.Hiring.HiringCycleRequest;
 import com.kanini.springer.dto.Hiring.HiringCycleResponse;
+import com.kanini.springer.dto.Hiring.HiringCycleSummaryResponse;
 import com.kanini.springer.service.Hiring.IHiringCycleService;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -57,6 +58,12 @@ public class HiringCycleController {
                 ? cycleService.getCyclesByStatus(status)
                 : cycleService.getAllCycles();
         return ResponseEntity.ok(ApiResponse.success("Hiring cycles retrieved successfully", responses));
+    }
+    
+    @GetMapping("/summary")
+    public ResponseEntity<ApiResponse<List<HiringCycleSummaryResponse>>> getAllCycleSummaries() {
+        List<HiringCycleSummaryResponse> responses = cycleService.getAllCycleSummaries();
+        return ResponseEntity.ok(ApiResponse.success("Hiring cycle summaries retrieved successfully", responses));
     }
     
     @PatchMapping(value = "/{cycleId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

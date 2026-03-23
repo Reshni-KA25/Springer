@@ -1,7 +1,6 @@
 package com.kanini.springer.service.Hiring.impl;
 
 import com.kanini.springer.dto.Hiring.BulkInsertResponse;
-import com.kanini.springer.dto.Hiring.BulkInsertResponse.BulkInsertError;
 import com.kanini.springer.dto.Hiring.InstituteContactRequest;
 import com.kanini.springer.dto.Hiring.InstituteContactResponse;
 import com.kanini.springer.entity.HiringReq.Institute;
@@ -73,13 +72,20 @@ public class InstituteTPOServiceImpl implements IInstituteTPOService {
     @Transactional
     public BulkInsertResponse<InstituteContactResponse> bulkCreateContacts(Long instituteId, List<InstituteContactRequest> requests) {
         List<InstituteContact> contactsToInsert = new ArrayList<>();
-        List<BulkInsertError> errors = new ArrayList<>();
+        List<String> errorMessages = new ArrayList<>();
+        int totalProcessed = requests.size();
         
         // Validate that the institute exists
         Institute institute = instituteRepository.findById(instituteId).orElse(null);
         if (institute == null) {
-            errors.add(new BulkInsertError("Institute ID: " + instituteId, "Institute not found"));
-            return new BulkInsertResponse<>(new ArrayList<>(), errors);
+            errorMessages.add("Institute ID: " + instituteId + ": Institute not found");
+            BulkInsertResponse<InstituteContactResponse> response = new BulkInsertResponse<>();
+            response.setSuccessfulInserts(new ArrayList<>());
+            response.setErrorMessages(errorMessages);
+            response.setTotalProcessed(totalProcessed);
+            response.setSuccessCount(0);
+            response.setFailureCount(errorMessages.size());
+            return response;
         }
         
         // Phase 1: Validate ALL records first
@@ -91,39 +97,39 @@ public class InstituteTPOServiceImpl implements IInstituteTPOService {
             try {
                 // Validate required fields
                 if (request.getTpoName() == null || request.getTpoName().isBlank()) {
-                    errors.add(new BulkInsertError(identifier, "TPO name is required"));
+                    errorMessages.add(identifier + ": TPO name is required");
                     continue;
                 }
                 
                 if (request.getTpoEmail() == null || request.getTpoEmail().isBlank()) {
-                    errors.add(new BulkInsertError(identifier, "TPO email is required"));
+                    errorMessages.add(identifier + ": TPO email is required");
                     continue;
                 }
                 
                 if (request.getTpoMobile() == null || request.getTpoMobile().isBlank()) {
-                    errors.add(new BulkInsertError(identifier, "TPO mobile is required"));
+                    errorMessages.add(identifier + ": TPO mobile is required");
                     continue;
                 }
                 
                 // Validate patterns
                 if (!NAME_PATTERN.matcher(request.getTpoName()).matches()) {
-                    errors.add(new BulkInsertError(identifier, "TPO name must contain only letters and spaces"));
+                    errorMessages.add(identifier + ": TPO name must contain only letters and spaces");
                     continue;
                 }
                 
                 if (!EMAIL_PATTERN.matcher(request.getTpoEmail()).matches()) {
-                    errors.add(new BulkInsertError(identifier, "Invalid email format"));
+                    errorMessages.add(identifier + ": Invalid email format");
                     continue;
                 }
                 
                 if (!MOBILE_PATTERN.matcher(request.getTpoMobile()).matches()) {
-                    errors.add(new BulkInsertError(identifier, "Invalid mobile number (must be 10-digit Indian number starting with 6-9)"));
+                    errorMessages.add(identifier + ": Invalid mobile number (must be 10-digit Indian number starting with 6-9)");
                     continue;
                 }
                 
                 // Check if email already exists
                 if (contactRepository.findByTpoEmail(request.getTpoEmail()).isPresent()) {
-                    errors.add(new BulkInsertError(identifier, "Contact already exists with this email"));
+                    errorMessages.add(identifier + ": Contact already exists with this email");
                     continue;
                 }
                 
@@ -132,11 +138,9 @@ public class InstituteTPOServiceImpl implements IInstituteTPOService {
                     try {
                         ContactStatus.valueOf(request.getTpoStatus());
                     } catch (IllegalArgumentException e) {
-                        errors.add(new BulkInsertError(identifier, "Invalid TPO status: " + request.getTpoStatus()));
-                        continue;
-                    }
+                        errorMessages.add(identifier + ": Invalid TPO status: " + request.getTpoStatus());
+                  }
                 }
-                
                 // Prepare contact for insertion
                 InstituteContact contact = new InstituteContact();
                 contact.setInstitute(institute);
@@ -153,15 +157,22 @@ public class InstituteTPOServiceImpl implements IInstituteTPOService {
                 contact.setIsPrimary(request.getIsPrimary() != null ? request.getIsPrimary() : false);
                 
                 contactsToInsert.add(contact);
-                
+            
             } catch (Exception e) {
-                errors.add(new BulkInsertError(identifier, "Validation error: " + e.getMessage()));
+                errorMessages.add(identifier + ": Validation error: " + e.getMessage());
             }
         }
         
+        
         // Phase 2: If ANY errors exist, rollback and return errors (all-or-nothing)
-        if (!errors.isEmpty()) {
-            return new BulkInsertResponse<>(new ArrayList<>(), errors);
+        if (!errorMessages.isEmpty()) {
+            BulkInsertResponse<InstituteContactResponse> response = new BulkInsertResponse<>();
+            response.setSuccessfulInserts(new ArrayList<>());
+            response.setErrorMessages(errorMessages);
+            response.setTotalProcessed(totalProcessed);
+            response.setSuccessCount(0);
+            response.setFailureCount(errorMessages.size());
+            return response;
         }
         
         // Phase 3: Insert all records (within transaction, will auto-rollback on exception)
@@ -170,7 +181,13 @@ public class InstituteTPOServiceImpl implements IInstituteTPOService {
                 .map(mapper::toResponse)
                 .collect(Collectors.toList());
         
-        return new BulkInsertResponse<>(responses, new ArrayList<>());
+        BulkInsertResponse<InstituteContactResponse> response = new BulkInsertResponse<>();
+        response.setSuccessfulInserts(responses);
+        response.setErrorMessages(new ArrayList<>());
+        response.setTotalProcessed(totalProcessed);
+        response.setSuccessCount(responses.size());
+        response.setFailureCount(0);
+        return response;
     }
     
     @Override
@@ -255,7 +272,8 @@ public class InstituteTPOServiceImpl implements IInstituteTPOService {
     @Transactional
     public BulkInsertResponse<InstituteContactResponse> bulkCreateAllContacts(List<InstituteContactRequest> requests) {
         List<InstituteContact> contactsToInsert = new ArrayList<>();
-        List<BulkInsertError> errors = new ArrayList<>();
+        List<String> errorMessages = new ArrayList<>();
+        int totalProcessed = requests.size();
         
         // Phase 1: Validate ALL records first
         for (int i = 0; i < requests.size(); i++) {
@@ -266,51 +284,51 @@ public class InstituteTPOServiceImpl implements IInstituteTPOService {
             try {
                 // Validate required fields
                 if (request.getInstituteId() == null) {
-                    errors.add(new BulkInsertError(identifier, "Institute ID is required"));
+                    errorMessages.add(identifier + ": Institute ID is required");
                     continue;
                 }
                 
                 if (request.getTpoName() == null || request.getTpoName().isBlank()) {
-                    errors.add(new BulkInsertError(identifier, "TPO name is required"));
+                    errorMessages.add(identifier + ": TPO name is required");
                     continue;
                 }
                 
                 if (request.getTpoEmail() == null || request.getTpoEmail().isBlank()) {
-                    errors.add(new BulkInsertError(identifier, "TPO email is required"));
+                    errorMessages.add(identifier + ": TPO email is required");
                     continue;
                 }
                 
                 if (request.getTpoMobile() == null || request.getTpoMobile().isBlank()) {
-                    errors.add(new BulkInsertError(identifier, "TPO mobile is required"));
+                    errorMessages.add(identifier + ": TPO mobile is required");
                     continue;
                 }
                 
                 // Validate that the institute exists
                 Institute institute = instituteRepository.findById(request.getInstituteId()).orElse(null);
                 if (institute == null) {
-                    errors.add(new BulkInsertError(identifier, "Institute not found with ID: " + request.getInstituteId()));
+                    errorMessages.add(identifier + ": Institute not found with ID: " + request.getInstituteId());
                     continue;
                 }
                 
                 // Validate patterns
                 if (!NAME_PATTERN.matcher(request.getTpoName()).matches()) {
-                    errors.add(new BulkInsertError(identifier, "TPO name must contain only letters and spaces"));
+                    errorMessages.add(identifier + ": TPO name must contain only letters and spaces");
                     continue;
                 }
                 
                 if (!EMAIL_PATTERN.matcher(request.getTpoEmail()).matches()) {
-                    errors.add(new BulkInsertError(identifier, "Invalid email format"));
+                    errorMessages.add(identifier + ": Invalid email format");
                     continue;
                 }
                 
                 if (!MOBILE_PATTERN.matcher(request.getTpoMobile()).matches()) {
-                    errors.add(new BulkInsertError(identifier, "Invalid mobile number (must be 10-digit Indian number starting with 6-9)"));
+                    errorMessages.add(identifier + ": Invalid mobile number (must be 10-digit Indian number starting with 6-9)");
                     continue;
                 }
                 
                 // Check if email already exists
                 if (contactRepository.findByTpoEmail(request.getTpoEmail()).isPresent()) {
-                    errors.add(new BulkInsertError(identifier, "Contact already exists with this email"));
+                    errorMessages.add(identifier + ": Contact already exists with this email");
                     continue;
                 }
                 
@@ -319,7 +337,7 @@ public class InstituteTPOServiceImpl implements IInstituteTPOService {
                     try {
                         ContactStatus.valueOf(request.getTpoStatus());
                     } catch (IllegalArgumentException e) {
-                        errors.add(new BulkInsertError(identifier, "Invalid TPO status: " + request.getTpoStatus()));
+                        errorMessages.add(identifier + ": Invalid TPO status: " + request.getTpoStatus());
                         continue;
                     }
                 }
@@ -342,13 +360,19 @@ public class InstituteTPOServiceImpl implements IInstituteTPOService {
                 contactsToInsert.add(contact);
                 
             } catch (Exception e) {
-                errors.add(new BulkInsertError(identifier, "Validation error: " + e.getMessage()));
+                errorMessages.add(identifier + ": Validation error: " + e.getMessage());
             }
         }
         
         // Phase 2: If ANY errors exist, rollback and return errors (all-or-nothing)
-        if (!errors.isEmpty()) {
-            return new BulkInsertResponse<>(new ArrayList<>(), errors);
+        if (!errorMessages.isEmpty()) {
+            BulkInsertResponse<InstituteContactResponse> response = new BulkInsertResponse<>();
+            response.setSuccessfulInserts(new ArrayList<>());
+            response.setErrorMessages(errorMessages);
+            response.setTotalProcessed(totalProcessed);
+            response.setSuccessCount(0);
+            response.setFailureCount(errorMessages.size());
+            return response;
         }
         
         // Phase 3: Insert all records (within transaction, will auto-rollback on exception)
@@ -357,6 +381,14 @@ public class InstituteTPOServiceImpl implements IInstituteTPOService {
                 .map(mapper::toResponse)
                 .collect(Collectors.toList());
         
-        return new BulkInsertResponse<>(responses, new ArrayList<>());
+        BulkInsertResponse<InstituteContactResponse> response = new BulkInsertResponse<>();
+        response.setSuccessfulInserts(responses);
+        response.setErrorMessages(new ArrayList<>());
+        response.setTotalProcessed(totalProcessed);
+        response.setSuccessCount(responses.size());
+        response.setFailureCount(0);
+        return response;
     }
 }
+
+

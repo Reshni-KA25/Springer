@@ -48,7 +48,7 @@ public class InstituteController {
         
         BulkInsertResponse<InstituteResponse> response = instituteService.bulkCreateInstitutes(requests);
         
-        if (!response.getErrors().isEmpty()) {
+        if (!response.getErrorMessages().isEmpty()) {
             // Validation errors occurred - no records inserted
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(new ApiResponse<>(false, "Validation failed. No records inserted.", response));

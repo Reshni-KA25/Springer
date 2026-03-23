@@ -1,7 +1,6 @@
 package com.kanini.springer.service.Hiring.impl;
 
 import com.kanini.springer.dto.Hiring.BulkInsertResponse;
-import com.kanini.springer.dto.Hiring.BulkInsertResponse.BulkInsertError;
 import com.kanini.springer.dto.Hiring.InstituteRequest;
 import com.kanini.springer.dto.Hiring.InstituteResponse;
 import com.kanini.springer.dto.Hiring.InstituteWithTPOsResponse;
@@ -60,7 +59,8 @@ public class InstituteServiceImpl implements IInstituteService {
     @Transactional
     public BulkInsertResponse<InstituteResponse> bulkCreateInstitutes(List<InstituteRequest> requests) {
         List<Institute> institutesToInsert = new ArrayList<>();
-        List<BulkInsertError> errors = new ArrayList<>();
+        List<String> errorMessages = new ArrayList<>();
+        int totalProcessed = requests.size();
         
         // Phase 1: Validate ALL records first
         for (int i = 0; i < requests.size(); i++) {
@@ -70,13 +70,13 @@ public class InstituteServiceImpl implements IInstituteService {
             try {
                 // Validate required fields
                 if (request.getInstituteName() == null || request.getInstituteName().isBlank()) {
-                    errors.add(new BulkInsertError(identifier, "Institute name is required"));
+                    errorMessages.add(identifier + ": Institute name is required");
                     continue;
                 }
                 
                 // Check if institute already exists
                 if (instituteRepository.findByInstituteName(request.getInstituteName()).isPresent()) {
-                    errors.add(new BulkInsertError(identifier, "Institute already exists with this name"));
+                    errorMessages.add(identifier + ": Institute already exists with this name");
                     continue;
                 }
                 
@@ -85,7 +85,7 @@ public class InstituteServiceImpl implements IInstituteService {
                     try {
                         InstituteTier.valueOf(request.getInstituteTier());
                     } catch (IllegalArgumentException e) {
-                        errors.add(new BulkInsertError(identifier, "Invalid institute tier: " + request.getInstituteTier()));
+                        errorMessages.add(identifier + ": Invalid institute tier: " + request.getInstituteTier());
                         continue;
                     }
                 }
@@ -106,13 +106,19 @@ public class InstituteServiceImpl implements IInstituteService {
                 institutesToInsert.add(institute);
                 
             } catch (Exception e) {
-                errors.add(new BulkInsertError(identifier, "Validation error: " + e.getMessage()));
+                errorMessages.add(identifier + ": Validation error: " + e.getMessage());
             }
         }
         
         // Phase 2: If ANY errors exist, rollback and return errors (all-or-nothing)
-        if (!errors.isEmpty()) {
-            return new BulkInsertResponse<>(new ArrayList<>(), errors);
+        if (!errorMessages.isEmpty()) {
+            BulkInsertResponse<InstituteResponse> response = new BulkInsertResponse<>();
+            response.setSuccessfulInserts(new ArrayList<>());
+            response.setErrorMessages(errorMessages);
+            response.setTotalProcessed(totalProcessed);
+            response.setSuccessCount(0);
+            response.setFailureCount(errorMessages.size());
+            return response;
         }
         
         // Phase 3: Insert all records (within transaction, will auto-rollback on exception)
@@ -121,7 +127,13 @@ public class InstituteServiceImpl implements IInstituteService {
                 .map(mapper::toResponse)
                 .collect(Collectors.toList());
         
-        return new BulkInsertResponse<>(responses, new ArrayList<>());
+        BulkInsertResponse<InstituteResponse> response = new BulkInsertResponse<>();
+        response.setSuccessfulInserts(responses);
+        response.setErrorMessages(new ArrayList<>());
+        response.setTotalProcessed(totalProcessed);
+        response.setSuccessCount(responses.size());
+        response.setFailureCount(0);
+        return response;
     }
     
     @Override

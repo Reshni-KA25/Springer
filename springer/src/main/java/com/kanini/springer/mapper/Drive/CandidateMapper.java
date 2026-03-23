@@ -1,7 +1,15 @@
 package com.kanini.springer.mapper.Drive;
 
+import com.kanini.springer.dto.Drive.CandidateRequest;
 import com.kanini.springer.dto.Drive.CandidateResponse;
 import com.kanini.springer.entity.Drive.Candidate;
+import com.kanini.springer.entity.Drive.CandidateSkill;
+import com.kanini.springer.entity.HiringReq.HiringCycle;
+import com.kanini.springer.entity.HiringReq.Institute;
+import com.kanini.springer.entity.enums.Enums.CandidateStatus;
+import com.kanini.springer.repository.Hiring.HiringCycleRepository;
+import com.kanini.springer.repository.Hiring.InstituteRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -9,7 +17,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
+@RequiredArgsConstructor
 public class CandidateMapper {
+    
+    private final InstituteRepository instituteRepository;
+    private final HiringCycleRepository hiringCycleRepository;
     
     /**
      * Convert Candidate entity to CandidateResponse DTO
@@ -41,11 +53,29 @@ public class CandidateMapper {
         if (candidate.getInstitute() != null) {
             response.setInstituteId(candidate.getInstitute().getInstituteId());
             response.setInstituteName(candidate.getInstitute().getInstituteName());
+            response.setState(candidate.getInstitute().getState());
+            response.setCity(candidate.getInstitute().getCity());
+        }
+        
+        // Map cycle details
+        if (candidate.getCycle() != null) {
+            response.setCycleId(candidate.getCycle().getCycleId());
         }
         
         // Map status enum to string
         if (candidate.getStatus() != null) {
             response.setStatus(candidate.getStatus().toString());
+        }
+        
+        // Map candidate skills to skill names
+        if (candidate.getCandidateSkills() != null && !candidate.getCandidateSkills().isEmpty()) {
+            List<String> skillNames = candidate.getCandidateSkills().stream()
+                    .filter(cs -> cs.getSkill() != null)
+                    .map(cs -> cs.getSkill().getSkillName())
+                    .collect(Collectors.toList());
+            response.setSkillNames(skillNames);
+        } else {
+            response.setSkillNames(new ArrayList<>());
         }
         
         return response;
@@ -62,5 +92,44 @@ public class CandidateMapper {
         return candidates.stream()
                 .map(this::toResponse)
                 .collect(Collectors.toList());
+    }
+    
+    /**
+     * Convert CandidateRequest DTO to Candidate entity
+     */
+    public Candidate toEntity(CandidateRequest request) {
+        Candidate candidate = new Candidate();
+        
+        // Set institute if provided
+        if (request.getInstituteId() != null) {
+            Institute institute = instituteRepository.findById(request.getInstituteId())
+                    .orElseThrow(() -> new RuntimeException("Institute not found with ID: " + request.getInstituteId()));
+            candidate.setInstitute(institute);
+        }
+        
+        // Set cycle if provided
+        if (request.getCycleId() != null) {
+            HiringCycle cycle = hiringCycleRepository.findById(request.getCycleId())
+                    .orElseThrow(() -> new RuntimeException("Hiring cycle not found with ID: " + request.getCycleId()));
+            candidate.setCycle(cycle);
+        }
+        
+        candidate.setFirstName(request.getFirstName());
+        candidate.setLastName(request.getLastName());
+        candidate.setEmail(request.getEmail());
+        candidate.setMobile(request.getMobile());
+        candidate.setCgpa(request.getCgpa());
+        candidate.setHistoryOfArrears(request.getHistoryOfArrears());
+        candidate.setDegree(request.getDegree());
+        candidate.setDepartment(request.getDepartment());
+        candidate.setPassoutYear(request.getPassoutYear());
+        candidate.setDateOfBirth(request.getDateOfBirth());
+        candidate.setAadhaarNumber(request.getAadhaarNumber());
+        
+        // Note: isEligible and reason are set by eligibility validation, not from request
+        // Status is always APPLIED for new candidates
+        candidate.setStatus(CandidateStatus.APPLIED);
+        
+        return candidate;
     }
 }

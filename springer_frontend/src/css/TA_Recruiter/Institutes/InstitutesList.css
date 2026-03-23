@@ -1,0 +1,353 @@
+.institutes-container {
+  padding: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Header */
+.institutes-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 16px;
+  background: var(--color-surface);
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid var(--color-border);
+}
+
+.institutes-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--color-text);
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.title-icon {
+  color: var(--color-primary);
+  font-size: 32px;
+}
+
+.institutes-subtitle {
+  color: var(--color-text);
+  opacity: 0.7;
+  margin-left: 44px;
+}
+
+.add-institute-btn {
+  background: var(--btn-bg) !important;
+  color: white !important;
+  padding: 10px 24px !important;
+  border-radius: 8px !important;
+  text-transform: none !important;
+  font-weight: 600 !important;
+  transition: all 0.3s ease !important;
+}
+
+.add-institute-btn:hover {
+  background: var(--btn-hover) !important;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-card);
+}
+
+/* Filters Card */
+.filters-card {
+  margin-bottom: 24px;
+  border-radius: 12px !important;
+  box-shadow: var(--shadow-card) !important;
+  background: var(--color-surface) !important;
+  border: 1px solid var(--color-border) !important;
+}
+
+.filters-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.filters-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+.filter-icon {
+  color: var(--color-primary);
+}
+
+.clear-filters-btn {
+  color: var(--color-danger) !important;
+  text-transform: none !important;
+}
+
+.filters-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.results-count {
+  color: var(--color-text);
+  opacity: 0.7;
+  text-align: right;
+  margin-top: 8px;
+}
+
+/* Table Styles */
+.institutes-table-container {
+  border-radius: 12px !important;
+  box-shadow: var(--shadow-card) !important;
+  border: 1px solid var(--color-border) !important;
+  background: var(--color-surface) !important;
+  overflow: hidden;
+}
+
+.institutes-table-container table {
+  background: transparent !important;
+}
+
+.table-header {
+  background: var(--color-primary) !important;
+  color: var(--color-text) !important;
+  font-weight: 600 !important;
+  padding: 16px !important;
+  border-bottom: 2px solid var(--color-border) !important;
+}
+
+.institute-row {
+  transition: background-color 0.2s ease;
+  border-bottom: 1px solid var(--color-border) !important;
+}
+
+.institute-row:hover {
+  background-color: var(--color-bg) !important;
+}
+
+.institute-row td {
+  padding: 16px !important;
+  color: var(--color-text) !important;
+  border-bottom: 1px solid var(--color-border) !important;
+}
+
+/* Institute Name Cell */
+.institute-name-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.institute-table-icon {
+  color: var(--color-primary);
+  font-size: 28px;
+}
+
+.institute-table-name {
+  color: var(--color-text) !important;
+  font-weight: 600 !important;
+  margin-bottom: 4px !important;
+}
+
+.institute-table-date {
+  color: var(--color-text) !important;
+  opacity: 0.6;
+}
+
+/* Location Cell */
+.location-cell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.location-table-icon {
+  color: var(--color-accent);
+  font-size: 18px;
+}
+
+.location-cell .MuiTypography-root {
+  color: var(--color-text) !important;
+}
+
+/* Chips */
+.tier-chip-table,
+.status-chip-table {
+  font-weight: 600 !important;
+}
+
+/* Action Buttons */
+.action-buttons {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+}
+
+.action-btn {
+  border: 1px solid var(--color-border) !important;
+  transition: all 0.2s ease !important;
+}
+
+.view-btn {
+  color: var(--color-primary) !important;
+  background: var(--color-surface) !important;
+}
+
+.view-btn:hover {
+  background: var(--color-primary) !important;
+  color: white !important;
+  transform: scale(1.1);
+}
+
+.invite-btn {
+  color: var(--color-accent) !important;
+  background: var(--color-surface) !important;
+}
+
+.invite-btn:hover {
+  background: var(--color-accent) !important;
+  color: white !important;
+  transform: scale(1.1);
+}
+
+/* Loading State */
+.institutes-loading {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+  gap: 16px;
+  color: var(--color-text);
+}
+
+/* No Results */
+.no-results-card {
+  border-radius: 12px !important;
+  box-shadow: var(--shadow-card) !important;
+  background: var(--color-surface) !important;
+  border: 1px solid var(--color-border) !important;
+}
+
+.no-results-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px !important;
+  text-align: center;
+}
+
+.no-results-icon {
+  font-size: 64px;
+  color: var(--color-primary);
+  opacity: 0.3;
+  margin-bottom: 16px;
+}
+
+.no-results-content .MuiTypography-root {
+  color: var(--color-text) !important;
+}
+
+/* Override MUI TextField colors */
+.filters-grid .MuiTextField-root .MuiInputBase-root {
+  background: var(--color-bg) !important;
+  color: var(--color-text) !important;
+}
+
+.filters-grid .MuiTextField-root .MuiInputLabel-root {
+  color: var(--color-text) !important;
+  opacity: 0.7;
+}
+
+.filters-grid .MuiTextField-root .MuiOutlinedInput-notchedOutline {
+  border-color: var(--color-border) !important;
+}
+
+.filters-grid .MuiTextField-root .MuiInputBase-input {
+  color: var(--color-text) !important;
+}
+
+.filters-grid .MuiTextField-root .MuiInputBase-input::placeholder {
+  color: var(--color-text) !important;
+  opacity: 0.5;
+}
+
+/* Override MUI Select colors */
+.filters-grid .MuiFormControl-root .MuiInputBase-root {
+  background: var(--color-bg) !important;
+  color: var(--color-text) !important;
+}
+
+.filters-grid .MuiFormControl-root .MuiInputLabel-root {
+  color: var(--color-text) !important;
+  opacity: 0.7;
+}
+
+.filters-grid .MuiFormControl-root .MuiOutlinedInput-notchedOutline {
+  border-color: var(--color-border) !important;
+}
+
+.filters-grid .MuiFormControl-root .MuiSelect-select {
+  color: var(--color-text) !important;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .institutes-container {
+    padding: 16px;
+  }
+
+  .institutes-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .add-institute-btn {
+    width: 100%;
+  }
+
+  .filters-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .institutes-subtitle {
+    margin-left: 0;
+  }
+
+  .institutes-table-container {
+    overflow-x: auto;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+    gap: 4px;
+  }
+}
+
+@media (max-width: 480px) {
+  .institutes-title {
+    font-size: 1.5rem;
+  }
+
+  .table-header {
+    font-size: 0.875rem;
+    padding: 12px 8px !important;
+  }
+
+  .institute-row td {
+    padding: 12px 8px !important;
+  }
+
+  .institute-name-cell {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

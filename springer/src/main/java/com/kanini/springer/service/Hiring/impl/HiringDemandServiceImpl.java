@@ -226,11 +226,6 @@ public class HiringDemandServiceImpl implements IHiringDemandService {
             throw new RuntimeException("Cannot delete approved hiring demand");
         }
         
-        // Validation: Cannot delete if demand has drives
-        if (demand.getDrives() != null && !demand.getDrives().isEmpty()) {
-            throw new RuntimeException("Cannot delete demand with existing drives");
-        }
-        
         // Delete associated requisition skills first
         requisitionSkillRepository.deleteByDemandDemandId(demandId);
         

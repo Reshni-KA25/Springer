@@ -24,6 +24,11 @@ public interface ManualOverrideRepository extends JpaRepository<ManualOverride, 
     List<ManualOverride> findByEntityType(OverrideEntityType entityType);
     
     /**
+     * Find all overrides by entity type and entity ID
+     */
+    List<ManualOverride> findByEntityTypeAndEntityId(OverrideEntityType entityType, Long entityId);
+    
+    /**
      * Find all overrides by user ID
      */
     @Query("SELECT mo FROM ManualOverride mo WHERE mo.createdBy.userId = :userId")
@@ -40,6 +45,12 @@ public interface ManualOverrideRepository extends JpaRepository<ManualOverride, 
      */
     @Query("SELECT mo FROM ManualOverride mo JOIN FETCH mo.createdBy WHERE mo.entityType = :entityType")
     List<ManualOverride> findByEntityTypeWithUser(@Param("entityType") OverrideEntityType entityType);
+    
+    /**
+     * Find overrides by entity type and entity ID with user details
+     */
+    @Query("SELECT mo FROM ManualOverride mo JOIN FETCH mo.createdBy WHERE mo.entityType = :entityType AND mo.entityId = :entityId")
+    List<ManualOverride> findByEntityTypeAndEntityIdWithUser(@Param("entityType") OverrideEntityType entityType, @Param("entityId") Long entityId);
     
     /**
      * Find overrides from date with user details

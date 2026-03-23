@@ -34,21 +34,41 @@ public interface CandidatesRepository extends JpaRepository<Candidate, Long> {
     List<Candidate> findByStatus(CandidateStatus status);
     
     /**
+     * Find candidates by cycle ID
+     */
+    List<Candidate> findByCycleCycleId(Long cycleId);
+    
+    /**
+     * Find candidates by cycle ID with institute and skills eagerly loaded
+     */
+    @Query("SELECT DISTINCT c FROM Candidate c LEFT JOIN FETCH c.institute LEFT JOIN FETCH c.cycle LEFT JOIN FETCH c.candidateSkills cs LEFT JOIN FETCH cs.skill WHERE c.cycle.cycleId = :cycleId")
+    List<Candidate> findByCycleIdWithDetails(@Param("cycleId") Long cycleId);
+    
+    /**
      * Find all candidates with institute details (JOIN FETCH to avoid lazy loading)
      */
-    @Query("SELECT c FROM Candidate c LEFT JOIN FETCH c.institute")
+    /**
+     * Find all candidates with institute and skills eagerly loaded
+     */
+    @Query("SELECT DISTINCT c FROM Candidate c LEFT JOIN FETCH c.institute LEFT JOIN FETCH c.candidateSkills cs LEFT JOIN FETCH cs.skill")
     List<Candidate> findAllWithInstitute();
     
     /**
      * Find candidates by institute ID with institute details
      */
-    @Query("SELECT c FROM Candidate c LEFT JOIN FETCH c.institute WHERE c.institute.instituteId = :instituteId")
+    /**
+     * Find candidates by institute ID with institute and skills eagerly loaded
+     */
+    @Query("SELECT DISTINCT c FROM Candidate c LEFT JOIN FETCH c.institute LEFT JOIN FETCH c.candidateSkills cs LEFT JOIN FETCH cs.skill WHERE c.institute.instituteId = :instituteId")
     List<Candidate> findByInstituteIdWithInstitute(@Param("instituteId") Long instituteId);
     
     /**
      * Find candidate by ID with institute details
      */
-    @Query("SELECT c FROM Candidate c LEFT JOIN FETCH c.institute WHERE c.candidateId = :candidateId")
+    /**
+     * Find a candidate by ID with institute and skills eagerly loaded
+     */
+    @Query("SELECT c FROM Candidate c LEFT JOIN FETCH c.institute LEFT JOIN FETCH c.candidateSkills cs LEFT JOIN FETCH cs.skill WHERE c.candidateId = :candidateId")
     Optional<Candidate> findByIdWithInstitute(@Param("candidateId") Long candidateId);
 }
 

@@ -33,6 +33,11 @@ public interface IOverrideService {
     List<ManualOverrideResponse> getOverridesByEntityType(String entityType);
     
     /**
+     * Get all overrides by entity type and entity ID
+     */
+    List<ManualOverrideResponse> getOverridesByEntityTypeAndEntityId(String entityType, Long entityId);
+    
+    /**
      * Get all overrides by user ID (who created the override)
      */
     List<ManualOverrideResponse> getOverridesByUserId(Long userId);

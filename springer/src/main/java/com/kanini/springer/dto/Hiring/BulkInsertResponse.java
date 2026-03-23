@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -11,14 +12,9 @@ import java.util.List;
 @AllArgsConstructor
 public class BulkInsertResponse<T> {
     
-    private List<T> successfulInserts;
-    private List<BulkInsertError> errors;
-    
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class BulkInsertError {
-        private String identifier; // name or email or ID
-        private String errorMessage;
-    }
+    private List<T> successfulInserts = new ArrayList<>();
+    private List<String> errorMessages = new ArrayList<>();
+    private int totalProcessed;
+    private int successCount;
+    private int failureCount;
 }

@@ -1,0 +1,263 @@
+.institute-details-container {
+  padding: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Header */
+.institute-details-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.back-btn {
+  color: var(--color-primary) !important;
+  background: var(--color-surface) !important;
+  border: 1px solid var(--color-border) !important;
+}
+
+.back-btn:hover {
+  background: var(--color-primary) !important;
+  color: white !important;
+}
+
+.page-title {
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+/* Institute Info Card */
+.institute-info-card {
+  margin-bottom: 24px;
+  border-radius: 12px !important;
+  box-shadow: var(--shadow-card) !important;
+  background: var(--color-surface) !important;
+  border: 1px solid var(--color-border) !important;
+}
+
+.institute-info-header {
+  margin-bottom: 24px;
+}
+
+.institute-title-section {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.institute-main-icon {
+  color: var(--color-primary);
+  font-size: 48px;
+}
+
+.institute-main-name {
+  color: var(--color-text);
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.institute-badges {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.tier-badge {
+  font-weight: 600 !important;
+}
+
+.section-divider {
+  margin: 24px 0 !important;
+  border-color: var(--color-border) !important;
+}
+
+/* Details Grid */
+.institute-details-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.detail-item {
+  display: flex;
+  gap: 12px;
+  padding: 16px;
+  background: var(--color-bg);
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+}
+
+.detail-icon {
+  color: var(--color-accent);
+  margin-top: 2px;
+}
+
+.detail-label {
+  color: var(--color-text);
+  opacity: 0.7;
+  display: block;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.detail-value {
+  color: var(--color-text);
+  font-weight: 500;
+}
+
+.detail-link a {
+  color: var(--color-primary);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.detail-link a:hover {
+  text-decoration: underline;
+}
+
+/* TPO Section */
+.tpo-section-card {
+  border-radius: 12px !important;
+  box-shadow: var(--shadow-card) !important;
+  background: var(--color-surface) !important;
+  border: 1px solid var(--color-border) !important;
+}
+
+.tpo-section-header {
+  margin-bottom: 24px;
+}
+
+.tpo-section-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+.section-icon {
+  color: var(--color-primary);
+}
+
+/* TPO Table */
+.tpo-table-container {
+  border-radius: 8px !important;
+  box-shadow: none !important;
+  border: 1px solid var(--color-border) !important;
+  background: var(--color-bg) !important;
+}
+
+.table-header {
+  background: var(--color-primary) !important;
+  color: white !important;
+  font-weight: 600 !important;
+  padding: 16px !important;
+}
+
+.tpo-row {
+  transition: background-color 0.2s ease;
+}
+
+.tpo-row:hover {
+  background-color: var(--color-surface) !important;
+}
+
+.tpo-name-cell {
+  font-weight: 500 !important;
+}
+
+.tpo-name-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tpo-avatar-icon {
+  color: var(--color-primary);
+  font-size: 20px;
+}
+
+.contact-cell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.contact-icon {
+  color: var(--color-accent);
+  font-size: 18px;
+}
+
+.status-chip {
+  font-weight: 600 !important;
+}
+
+.primary-star-icon {
+  color: var(--color-warning);
+  font-size: 20px;
+}
+
+/* No TPO Content */
+.no-tpo-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.no-tpo-icon {
+  font-size: 64px;
+  color: var(--color-primary);
+  opacity: 0.3;
+  margin-bottom: 16px;
+}
+
+/* Loading & Error States */
+.institute-details-loading,
+.institute-details-error {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+  gap: 16px;
+  color: var(--color-text);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .institute-details-container {
+    padding: 16px;
+  }
+
+  .institute-title-section {
+    flex-direction: column;
+  }
+
+  .institute-details-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tpo-table-container {
+    overflow-x: auto;
+  }
+
+  .page-title {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .institute-main-icon {
+    font-size: 36px;
+  }
+
+  .institute-main-name {
+    font-size: 1.25rem;
+  }
+}

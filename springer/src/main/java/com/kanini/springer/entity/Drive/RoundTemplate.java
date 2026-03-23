@@ -43,10 +43,6 @@ public class RoundTemplate {
     @Column(columnDefinition = "JSON")
     private String sections; // can be null - sub-category marks like {apptitude, logical, problem-solving, verbal}
     
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "scored_by")
-    private User scoredBy; // role of the technical panel - only they can give score for technical rounds
-    
     private Boolean isActive; // is this round active
     
     private LocalDateTime createdAt;

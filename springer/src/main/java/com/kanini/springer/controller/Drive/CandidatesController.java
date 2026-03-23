@@ -1,10 +1,16 @@
 package com.kanini.springer.controller.Drive;
 
 import com.kanini.springer.dto.Authentication.ApiResponse;
+import com.kanini.springer.dto.Drive.BulkCandidateCreateResponse;
+import com.kanini.springer.dto.Drive.BulkCandidateStatusUpdateRequest;
+import com.kanini.springer.dto.Drive.BulkCandidateStatusUpdateResponse;
 import com.kanini.springer.dto.Drive.CandidateRequest;
 import com.kanini.springer.dto.Drive.CandidateResponse;
 import com.kanini.springer.dto.Drive.CandidateStatusUpdateRequest;
+import com.kanini.springer.dto.Drive.CandidateUpdateRequest;
+import com.kanini.springer.dto.Drive.EligibilityRuleUpdateRequest;
 import com.kanini.springer.service.Drive.ICandidatesService;
+import com.kanini.springer.service.Drive.IEligibilityRuleService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +27,7 @@ import java.util.List;
 public class CandidatesController {
     
     private final ICandidatesService candidatesService;
+    private final IEligibilityRuleService eligibilityRuleService;
     
     @PostMapping
     @Operation(summary = "Create a new candidate", description = "Creates a single candidate record")
@@ -31,16 +38,26 @@ public class CandidatesController {
     }
     
     @PostMapping("/bulk")
-    @Operation(summary = "Bulk create candidates", description = "Creates multiple candidates at once. Skips duplicates based on email and aadhaar.")
-    public ResponseEntity<ApiResponse<List<CandidateResponse>>> bulkCreateCandidates(
+    @Operation(summary = "Bulk create candidates", 
+               description = "Creates multiple candidates at once with validation. " +
+                            "All-or-nothing: either all candidates are created or none. " +
+                            "Validates email and aadhaar uniqueness across batch and database.")
+    public ResponseEntity<ApiResponse<BulkCandidateCreateResponse>> bulkCreateCandidates(
             @RequestBody List<CandidateRequest> requests) {
         if (requests == null || requests.isEmpty()) {
             throw new RuntimeException("Request body cannot be empty");
         }
         
-        List<CandidateResponse> responses = candidatesService.bulkCreateCandidates(requests);
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(new ApiResponse<>(true, "Candidates created successfully", responses));
+        BulkCandidateCreateResponse response = candidatesService.bulkCreateCandidates(requests);
+        
+        // Determine success status based on whether any candidates were created
+        boolean isSuccess = response.getSuccessCount() > 0;
+        String message = isSuccess 
+            ? "All " + response.getSuccessCount() + " candidates created successfully"
+            : "Validation failed. No candidates were created. " + response.getErrorMessages().size() + " error(s) found.";
+        
+        return ResponseEntity.status(isSuccess ? HttpStatus.CREATED : HttpStatus.BAD_REQUEST)
+                .body(new ApiResponse<>(isSuccess, message, response));
     }
     
     @GetMapping
@@ -65,12 +82,20 @@ public class CandidatesController {
         return ResponseEntity.ok(new ApiResponse<>(true, "Candidates retrieved successfully", responses));
     }
     
+    @GetMapping("/cycle/{cycleId}")
+    @Operation(summary = "Get candidates by cycle", description = "Retrieves all candidates from a specific hiring cycle with institute details")
+    public ResponseEntity<ApiResponse<List<CandidateResponse>>> getCandidatesByCycleId(
+            @PathVariable("cycleId") Long cycleId) {
+        List<CandidateResponse> responses = candidatesService.getCandidatesByCycleId(cycleId);
+        return ResponseEntity.ok(new ApiResponse<>(true, "Candidates retrieved successfully", responses));
+    }
+    
     @PatchMapping("/{id}")
     @Operation(summary = "Update candidate", 
-               description = "Partially updates a candidate. Automatically logs changes to manual_override table if updatedBy is provided.")
+               description = "Partially updates a candidate. Requires mandatory 'reason' field. Automatically logs changes to manual_override table.")
     public ResponseEntity<ApiResponse<CandidateResponse>> updateCandidate(
             @PathVariable("id") Long candidateId,
-            @RequestBody CandidateRequest request,
+            @RequestBody CandidateUpdateRequest request,
             @RequestParam(required = false) Long updatedBy) {
         CandidateResponse response = candidatesService.updateCandidate(candidateId, request, updatedBy);
         return ResponseEntity.ok(new ApiResponse<>(true, "Candidate updated successfully", response));
@@ -84,6 +109,36 @@ public class CandidatesController {
             @RequestBody CandidateStatusUpdateRequest request) {
         CandidateResponse response = candidatesService.updateCandidateStatus(candidateId, request);
         return ResponseEntity.ok(new ApiResponse<>(true, "Candidate status updated successfully", response));
+    }
+    
+    @PatchMapping("/status/bulk")
+    @Operation(summary = "Bulk update candidate status", 
+               description = "Updates status for multiple candidates at once. Only eligible candidates are updated for progression statuses. Ineligible candidates are skipped with error messages.")
+    public ResponseEntity<ApiResponse<BulkCandidateStatusUpdateResponse>> bulkUpdateCandidateStatus(
+            @RequestBody BulkCandidateStatusUpdateRequest request) {
+        BulkCandidateStatusUpdateResponse response = candidatesService.bulkUpdateCandidateStatus(request);
+        
+        String message = String.format("Processed %d candidates: %d successful, %d failed", 
+                response.getTotalProcessed(), response.getSuccessCount(), response.getFailureCount());
+        
+        return ResponseEntity.ok(new ApiResponse<>(true, message, response));
+    }
+    
+    @GetMapping("/eligibility-rules")
+    @Operation(summary = "Get eligibility rules", 
+               description = "Retrieves all eligibility validation rules from EligibilityRule.json")
+    public ResponseEntity<ApiResponse<EligibilityRuleUpdateRequest>> getEligibilityRules() {
+        EligibilityRuleUpdateRequest rules = eligibilityRuleService.getAllRules();
+        return ResponseEntity.ok(new ApiResponse<>(true, "Eligibility rules retrieved successfully", rules));
+    }
+    
+    @PatchMapping("/eligibility-rules")
+    @Operation(summary = "Update eligibility rules", 
+               description = "Updates the eligibility validation rules. Rules are applied during candidate creation.")
+    public ResponseEntity<ApiResponse<EligibilityRuleUpdateRequest>> updateEligibilityRules(
+            @RequestBody EligibilityRuleUpdateRequest request) {
+        EligibilityRuleUpdateRequest updatedRules = eligibilityRuleService.updateRules(request);
+        return ResponseEntity.ok(new ApiResponse<>(true, "Eligibility rules updated successfully", updatedRules));
     }
 }
 

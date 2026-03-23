@@ -114,7 +114,7 @@ function Sidebar({ isOpen, onClose }: SidebarProps) {
       },
       {
         name: "Institutes",
-        path: "/institutes",
+        path: "/ta-recruiter/institutes",
         icon: (
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M3 21h18" />
@@ -124,7 +124,7 @@ function Sidebar({ isOpen, onClose }: SidebarProps) {
       },
       {
         name: "Candidates",
-        path: "/candidates",
+        path: "/ta-recruiter/candidates",
         icon: (
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M17 21v-2a4 4 0 00-8 0v2" />

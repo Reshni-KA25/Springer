@@ -74,6 +74,15 @@ public class OverrideController {
         return ResponseEntity.ok(new ApiResponse<>(true, "Overrides for " + entityType + " retrieved successfully", responses));
     }
     
+    @GetMapping("/by-entity-id")
+    @Operation(summary = "Get overrides by entity type and ID", description = "Retrieves all override records for a specific entity type and entity ID")
+    public ResponseEntity<ApiResponse<List<ManualOverrideResponse>>> getOverridesByEntityTypeAndEntityId(
+            @RequestParam String entityType,
+            @RequestParam Long entityId) {
+        List<ManualOverrideResponse> responses = overrideService.getOverridesByEntityTypeAndEntityId(entityType, entityId);
+        return ResponseEntity.ok(new ApiResponse<>(true, "Overrides for " + entityType + " with ID " + entityId + " retrieved successfully", responses));
+    }
+    
     @GetMapping("/by-user")
     @Operation(summary = "Get overrides by user", description = "Retrieves all override records created by a specific user")
     public ResponseEntity<ApiResponse<List<ManualOverrideResponse>>> getOverridesByUserId(
