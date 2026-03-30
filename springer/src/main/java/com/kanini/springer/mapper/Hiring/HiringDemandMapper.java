@@ -1,8 +1,13 @@
 package com.kanini.springer.mapper.Hiring;
 
 import com.kanini.springer.dto.Hiring.HiringDemandResponse;
+import com.kanini.springer.dto.Hiring.SkillResponse;
 import com.kanini.springer.entity.HiringReq.HiringDemand;
 import org.springframework.stereotype.Component;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class HiringDemandMapper {
@@ -19,6 +24,21 @@ public class HiringDemandMapper {
         response.setApprovalStatus(demand.getApprovalStatus().toString());
         response.setCreatedByUsername(demand.getCreatedBy().getUsername());
         response.setCreatedAt(demand.getCreatedAt());
+        
+        // Map requisition skills to skill responses
+        List<SkillResponse> skillResponses = Collections.emptyList();
+        if (demand.getRequisitionSkills() != null && !demand.getRequisitionSkills().isEmpty()) {
+            skillResponses = demand.getRequisitionSkills().stream()
+                    .map(rs -> {
+                        SkillResponse skillResponse = new SkillResponse();
+                        skillResponse.setSkillId(rs.getSkill().getSkillId());
+                        skillResponse.setSkillName(rs.getSkill().getSkillName());
+                        return skillResponse;
+                    })
+                    .collect(Collectors.toList());
+        }
+        response.setSkills(skillResponses);
+        
         return response;
     }
 }

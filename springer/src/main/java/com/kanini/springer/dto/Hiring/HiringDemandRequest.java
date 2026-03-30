@@ -1,31 +1,29 @@
 package com.kanini.springer.dto.Hiring;
 
 import com.kanini.springer.entity.enums.Enums.ApprovalStatus;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class HiringDemandRequest {
     
-    @NotNull(message = "Cycle ID is required")
-    private Long cycleId;
+    private Long cycleId; // Required for POST, optional for PATCH
     
-    @NotBlank(message = "Business unit is required")
-    private String businessUnit;
+    private String businessUnit; // Required for POST, optional for PATCH
     
-    @NotNull(message = "Demand count is required")
-    private Integer demandCount;
+    private Integer demandCount; // Required for POST, optional for PATCH
     
-    @NotBlank(message = "Compensation band is required")
-    private String compensationBand;
+    private String compensationBand; // Required for POST, optional for PATCH
     
-    private byte[] jobDescription;
+    private String jobDescription; // Job description or requirements as text
     
-    @NotNull(message = "Approval status is required")
-    private ApprovalStatus approvalStatus;
+    private ApprovalStatus approvalStatus; // Required for POST, optional for PATCH
+    
+    private List<Long> skillIds; // List of skill IDs to map to this demand
 }

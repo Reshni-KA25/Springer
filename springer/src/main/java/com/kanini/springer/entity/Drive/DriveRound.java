@@ -11,7 +11,12 @@ import java.time.LocalDateTime;
  * For a particular drive what are the rounds included will be mapped here
  */
 @Entity
-@Table(name = "drive_rounds")
+@Table(name = "drive_rounds",
+  
+    uniqueConstraints = {
+        @UniqueConstraint(name = "uk_drive_round_config", columnNames = {"drive_id", "round_config_id"})
+    }
+)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

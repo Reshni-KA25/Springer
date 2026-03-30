@@ -13,7 +13,13 @@ import com.kanini.springer.entity.HiringReq.User;
  * Stores notifications sent between users in the system
  */
 @Entity
-@Table(name = "notifications")
+@Table(name = "notifications",
+    indexes = {
+       
+        @Index(name = "idx_notification_sent_to", columnList = "sent_to"),
+        
+    }
+)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

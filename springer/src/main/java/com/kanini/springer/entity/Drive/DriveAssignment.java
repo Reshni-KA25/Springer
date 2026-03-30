@@ -14,7 +14,13 @@ import com.kanini.springer.entity.enums.Enums.AssignmentStatus;
  * The company employee who are assigned to conduct the drive rounds
  */
 @Entity
-@Table(name = "drivepanel_assignments")
+@Table(name = "drivepanel_assignments",
+    indexes = {
+        @Index(name = "idx_assignment_drive_id", columnList = "drive_id"),
+        @Index(name = "idx_assignment_application_id", columnList = "application_id"),
+  
+    }
+)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -37,7 +43,7 @@ public class DriveAssignment {
     private Application application;
     
     @Enumerated(EnumType.STRING)
-    private AssignmentStatus status; // PLANNED, DRAFT, SELECTED, REJECTED
+    private AssignmentStatus status; // PLANNED, DRAFT, SELECTED, REJECTED, CANCELLED
     
     private Boolean isActive; // true=current assignment
     

@@ -14,7 +14,13 @@ import com.kanini.springer.entity.HiringReq.User;
  * All the rounds will be stored here
  */
 @Entity
-@Table(name = "round_templates")
+@Table(name = "round_templates",
+    indexes = {
+     
+        @Index(name = "idx_round_template_active", columnList = "isActive"),
+  
+    }
+)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -36,10 +42,6 @@ public class RoundTemplate {
     
     @Column(columnDefinition = "JSON")
     private String sections; // can be null - sub-category marks like {apptitude, logical, problem-solving, verbal}
-    
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "scored_by")
-    private User scoredBy; // role of the technical panel - only they can give score for technical rounds
     
     private Boolean isActive; // is this round active
     

@@ -15,7 +15,11 @@ import com.kanini.springer.entity.enums.Enums.VerificationStatus;
  * Each doc submitted by the selected candidates
  */
 @Entity
-@Table(name = "document_submissions")
+@Table(name = "document_submissions",
+    indexes = {
+        @Index(name = "idx_doc_candidate_id", columnList = "candidate_id"),
+      }
+)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

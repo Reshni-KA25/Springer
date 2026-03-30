@@ -14,7 +14,11 @@ import com.kanini.springer.entity.enums.Enums.RoleName;
  * To specify what are the roles is contained
  */
 @Entity
-@Table(name = "roles")
+@Table(name = "roles",
+    indexes = {
+        @Index(name = "idx_role_name", columnList = "roleName", unique = true)
+    }
+)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

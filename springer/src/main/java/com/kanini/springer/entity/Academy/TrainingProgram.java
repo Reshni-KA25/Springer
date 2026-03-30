@@ -14,7 +14,12 @@ import com.kanini.springer.entity.HiringReq.HiringCycle;
  * We start the training program for the candidates
  */
 @Entity
-@Table(name = "training_programs")
+@Table(name = "training_programs",
+    indexes = {     
+      
+        @Index(name = "idx_program_location", columnList = "location"),
+    }
+)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -37,6 +42,8 @@ public class TrainingProgram {
     private Integer numberOfBatches;
     
     private String location; // training planned location ie bangalore or chennai
+
+    private boolean status;
     
     private LocalDateTime createdAt;
     

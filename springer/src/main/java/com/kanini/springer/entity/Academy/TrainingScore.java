@@ -14,7 +14,14 @@ import com.kanini.springer.entity.enums.Enums.ScoreStatus;
  * The score secured by each candidates in each course
  */
 @Entity
-@Table(name = "training_scores")
+@Table(name = "training_scores",
+    indexes = {
+        @Index(name = "idx_training_score_course_id", columnList = "course_id")
+    },
+    uniqueConstraints = {
+        @UniqueConstraint(name = "uk_student_course", columnNames = {"student_id", "course_id"})
+    }
+)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

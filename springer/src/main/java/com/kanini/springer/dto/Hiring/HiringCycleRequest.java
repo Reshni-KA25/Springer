@@ -1,19 +1,23 @@
 package com.kanini.springer.dto.Hiring;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class HiringCycleRequest {
     
-    @NotNull(message = "Cycle year is required")
-    private Integer cycleYear;
+    private Integer cycleYear; // Required for POST, optional for PATCH
     
-    @NotBlank(message = "Cycle name is required")
-    private String cycleName;
+    private String cycleName; // Required for POST, optional for PATCH
+    
+    private Integer compensationBand;
+    
+    private Integer budget;
+    
+    private MultipartFile jd; // Job description file upload
 }

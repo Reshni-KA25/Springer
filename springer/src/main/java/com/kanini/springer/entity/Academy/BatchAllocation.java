@@ -16,7 +16,14 @@ import com.kanini.springer.entity.enums.Enums.Performance;
  * It links the selected candidates to the course and program for a year
  */
 @Entity
-@Table(name = "batch_allocations")
+@Table(name = "batch_allocations",
+    indexes = {
+        @Index(name = "idx_batch_program_id", columnList = "program_id"),
+    },
+    uniqueConstraints = {
+        @UniqueConstraint(name = "uk_program_candidate", columnNames = {"program_id", "candidate_id"})
+    }
+)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

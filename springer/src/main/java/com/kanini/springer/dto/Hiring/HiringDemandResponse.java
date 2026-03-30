@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -20,4 +21,5 @@ public class HiringDemandResponse {
     private String approvalStatus;
     private String createdByUsername;
     private LocalDateTime createdAt;
+    private List<SkillResponse> skills; // List of skills mapped to this demand
 }

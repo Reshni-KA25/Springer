@@ -15,7 +15,11 @@ import com.kanini.springer.entity.enums.Enums.CourseStatus;
  * The course and the duration for the program is planned here
  */
 @Entity
-@Table(name = "training_courses")
+@Table(name = "training_courses",
+    indexes = {
+        @Index(name = "idx_course_name", columnList = "courseName"),       
+    }
+)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

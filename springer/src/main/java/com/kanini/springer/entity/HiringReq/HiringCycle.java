@@ -18,7 +18,11 @@ import com.kanini.springer.entity.enums.Enums.CycleStatus;
  * To store the hiring cycle for each year
  */
 @Entity
-@Table(name = "hiring_cycles")
+@Table(name = "hiring_cycles",
+    indexes = {
+        @Index(name = "idx_cycle_year", columnList = "cycleYear")
+    }
+)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

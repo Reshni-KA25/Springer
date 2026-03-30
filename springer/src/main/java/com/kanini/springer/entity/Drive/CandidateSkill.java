@@ -12,7 +12,12 @@ import com.kanini.springer.entity.HiringReq.Skill;
  * Junction table between Candidate and Skill (master table)
  */
 @Entity
-@Table(name = "candidate_skills")
+@Table(name = "candidate_skills",
+   
+    uniqueConstraints = {
+        @UniqueConstraint(name = "uk_candidate_skill", columnNames = {"candidate_id", "skill_id"})
+    }
+)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

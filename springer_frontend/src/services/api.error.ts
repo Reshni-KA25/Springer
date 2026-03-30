@@ -1,50 +1,70 @@
 import axios from "axios";
 
-export interface ApiErrorResponse {
+export interface ApiErrorResponse<T = unknown> {
   success: boolean;
   message: string;
-  data: null;
+  data?: T;
 }
 
-export interface AppError {
+export interface AppError<T = unknown> {
   message: string;
   success: boolean;
+  data?: T;
 }
 
-export function handleAxiosError(error: unknown): AppError {
+/**
+ * Centralized error handler for all API calls
+ * Transforms various error types into a consistent AppError structure
+ * 
+ * @param error - The caught error (Axios error, AppError, or unknown)
+ * @returns AppError object with message, success: false, and optional data
+ * 
+ * @example
+ * ```typescript
+ * try {
+ *   const response = await http.post('/skills', data);
+ *   return response.data;
+ * } catch (error) {
+ *   throw handleAxiosError(error);
+ * }
+ * ```
+ */
+export function handleAxiosError<T = unknown>(error: unknown): AppError<T> {
 
-  // CASE 1: Axios error (network/server/HTTP) - CHECK THIS FIRST!
+  // CASE 1: Axios error (HTTP request failed)
   if (axios.isAxiosError(error)) {
-    // Extract error message from response body
-    const apiError = error.response?.data as ApiErrorResponse | undefined;
-    
-    // If backend sent a properly formatted error response, use it
+    // Try to extract ApiResponse from response body
+    const apiError = error.response?.data as ApiErrorResponse<T> | undefined;
+
     if (apiError && apiError.message) {
+      // Backend returned structured error with message
       return {
         message: apiError.message,
-        success: false
+        success: false,
+        data: apiError.data
       };
     }
-    
-    // Otherwise, use axios error message
+
+    // Fallback: use axios error message
     return {
-      message: error.message || "Unknown server error",
+      message: error.message || "Network error occurred",
       success: false
     };
   }
 
-  // CASE 2: Manually thrown AppError
+  // CASE 2: Already an AppError object (from manual throws)
   if (typeof error === "object" && error !== null && "message" in error) {
-    const err = error as AppError;
+    const err = error as AppError<T>;
     return {
       message: err.message,
-      success: false
+      success: err.success !== undefined ? err.success : false,
+      data: err.data
     };
   }
 
-  // CASE 3: Unexpected non-Axios error
+  // CASE 3: Unexpected error (string, undefined, etc.)
   return {
-    message: "Unexpected error occurred",
+    message: typeof error === "string" ? error : "Unexpected error occurred",
     success: false
   };
 }

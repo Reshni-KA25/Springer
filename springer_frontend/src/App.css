@@ -1,89 +1,68 @@
 :root {
-  /* Primary - Deep Professional Navy */
-  --primary-color: #032f8e;
-  --primary-hover: #1e40af;
+  /* Brand */
+  --color-primary: #0a0a98d6;
+  --color-primary-hover: #0941c3a7;
 
-  /* Secondary - Soft Sky Blue (Used for light backgrounds/accents) */
-  --secondary-color: #6099f5;
-  --secondary-hover: #3b82f6;
+  /* Backgrounds */
+  --color-bg: #f8fafc;
+  --color-surface: #ffffff;
 
-  /* Background & Text */
-  --bg-color: #f8fafc;
-  --text-color: #0f172a;
+  /* Text */
+  --color-text: #0f172a;
+  --color-text-muted: #475569;
 
-  /* Navbar - Keeping it white for a clean, light look */
-  --navbar-bg: #ffffff;
-  --navbar-text: #0f172a;
+  /* Borders */
+  --color-border: #e2e8f0;
 
-  /* Cards - Slate 50 border for subtle separation */
-  --card-bg: #ffffff;
-  --card-border: #e2e8f0;
+  /* Accent */
+  --color-accent: #7ea3e2;
 
-  /* General */
-  --border-color: #e2e8f0;
-
-  /* Inputs */
-  --input-bg: #ffffff;
-  --input-border: #cbd5e1;
-
-  /* Status Colors (Standard accessible palette) */
-  --success-color: #16a34a;
-  --warning-color: #ca8a04;
-  --danger-color: #dc2626;
+  /* Status */
+  --color-success: #3ee37b;
+  --color-warning: #f8c14b;
+  --color-danger: #f65c5c;
 
   /* Buttons */
-  --btn-color: #041d51;
-  --btn-hover: #5e9afa;
+  --btn-bg: var(--color-primary);
+  --btn-hover: var(--color-primary-hover);
 
   /* Shadows */
-  --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  --card-shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-card: 0 4px 6px rgba(0,0,0,0.1);
 
-  /* Gradient */
-  --gradient-primary: linear-gradient(135deg, #032f8e, #3b82f6);
+  --color-orange: #f97316;
+  --color-purple: #8b5cf6;
+  --color-green: #22c55e;
+  --color-blue: #2ddef9;
 }
 
 [data-theme="dark"] {
-  /* Primary - Lightened for visibility on dark backgrounds */
-  --primary-color: #3b82f6; 
-  --primary-hover: #60a5fa;
+  /* Brand */
+  --color-primary: #3b82f6;
+  --color-primary-hover: #60a5fa;
 
-  /* Secondary - Using a lighter tint for dark mode */
-  --secondary-color: #ffffff;
-  --secondary-hover: #e1eeffc6;
+  /* Backgrounds */
+  --color-bg: #020617;
+  --color-surface: #0f172a;
 
-  /* Background & Text */
-  --bg-color: #000001f7; /* Deepest Navy-Black */
-  --text-color: #f1f5f9;
+  /* Text */
+  --color-text: #f1f5f9;
+  --color-text-muted: #94a3b8;
 
-  /* Navbar */
-  --navbar-bg: #031f5d;
-  --navbar-text: #f1f5f9;
+  /* Borders */
+  --color-border: #1e293b;
 
-  /* Cards */
-  --card-bg: #0f172a;
-  --card-border: #1e293b;
+  /* Accent */
+  --color-accent: #60a5fa;
 
-  /* General */
-  --border-color: #1e293b;
-
-  /* Inputs */
-  --input-bg: #1e293b;
-  --input-border: #334155;
-
-  /* Status Colors - Brighter for Dark Mode */
-  --success-color: #4ade80;
-  --warning-color: #fbbf24;
-  --danger-color: #f87171;
+  /* Status */
+  --color-success: #4ade80;
+  --color-warning: #fbbf24;
+  --color-danger: #f87171;
 
   /* Buttons */
-  --btn-color: #1e06fa;
-  --btn-hover: #60a5fa;
+  --btn-bg: var(--color-primary);
+  --btn-hover: var(--color-primary-hover);
 
   /* Shadows */
-  --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
-  --card-shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.6);
-
-  /* Gradient */
-  --gradient-primary: linear-gradient(135deg, #3b82f6, #60a5fa);
+  --shadow-card: 0 4px 6px rgba(0,0,0,0.5);
 }

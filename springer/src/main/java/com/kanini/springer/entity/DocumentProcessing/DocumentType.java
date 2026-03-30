@@ -14,7 +14,11 @@ import com.kanini.springer.entity.enums.Enums;
  * All the documents will be mentioned here
  */
 @Entity
-@Table(name = "document_types")
+@Table(name = "document_types",
+    indexes = {
+        @Index(name = "idx_doc_type_enum", columnList = "documentType", unique = true)
+    }
+)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

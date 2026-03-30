@@ -11,7 +11,12 @@ import java.time.LocalDateTime;
  * Maps batches to their assigned training courses
  */
 @Entity
-@Table(name = "batch_courses")
+@Table(name = "batch_courses",
+    
+    uniqueConstraints = {
+        @UniqueConstraint(name = "uk_program_batch_course", columnNames = {"program_id", "batchNo", "course_id"})
+    }
+)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

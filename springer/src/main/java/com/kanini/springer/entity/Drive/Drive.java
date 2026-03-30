@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.kanini.springer.entity.HiringReq.HiringCycle;
-import com.kanini.springer.entity.HiringReq.HiringDemand;
+
 import com.kanini.springer.entity.HiringReq.Institute;
 import com.kanini.springer.entity.HiringReq.User;
 import com.kanini.springer.entity.enums.Enums.DriveMode;
@@ -20,7 +20,12 @@ import com.kanini.springer.entity.enums.Enums.DriveStatus;
  * The multiple drive schedules in a cycle like offcampus and oncampus at various location
  */
 @Entity
-@Table(name = "drive_schedule")
+@Table(name = "drive_schedule",
+    indexes = {
+        @Index(name = "idx_drive_cycle_id", columnList = "cycle_id"),
+        @Index(name = "idx_drive_institute_id", columnList = "institute_id")
+    }
+)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -33,11 +38,7 @@ public class Drive {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cycle_id")
     private HiringCycle cycle;
-    
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "demand_id")
-    private HiringDemand demand;
-    
+     
     private String driveName;
     
     @Column(columnDefinition = "TEXT")
@@ -57,9 +58,7 @@ public class Drive {
     
     private String location; // like chennai, coimbatore or online
     
-    private Boolean eligibilityLocked; // locked once the drive date is confirmed
-    
-    private Boolean cutoffLocked;
+    private Boolean eligibilityLocked; // locked once the drive date is confirmed   
     
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

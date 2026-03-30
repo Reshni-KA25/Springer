@@ -17,7 +17,13 @@ import com.kanini.springer.entity.enums.Enums.InstituteTier;
  * All colleges data will stored here
  */
 @Entity
-@Table(name = "institutes")
+@Table(name = "institutes",
+    indexes = {
+
+        @Index(name = "idx_institute_tier", columnList = "instituteTier"),
+        @Index(name = "idx_institute_location", columnList = "state, city"),
+    }
+)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -33,9 +39,7 @@ public class Institute {
     
     @Enumerated(EnumType.STRING)
     private InstituteTier instituteTier; // TIER_1, TIER_2, TIER_3
-    
-    private String location; // optional - GOOGLE location url
-    
+ 
     private String state;
     
     private String city;
@@ -46,6 +50,9 @@ public class Institute {
     
     @OneToMany(mappedBy = "institute", cascade = CascadeType.ALL)
     private List<InstituteContact> instituteContacts;
+    
+    @OneToMany(mappedBy = "institute", cascade = CascadeType.ALL)
+    private List<InstituteProgram> institutePrograms;
     
     @OneToMany(mappedBy = "institute", cascade = CascadeType.ALL)
     private List<Candidate> candidates;

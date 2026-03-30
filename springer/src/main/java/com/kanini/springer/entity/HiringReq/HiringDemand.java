@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.kanini.springer.entity.Drive.Drive;
 import com.kanini.springer.entity.Drive.RequisitionSkill;
 import com.kanini.springer.entity.enums.Enums.ApprovalStatus;
 import com.kanini.springer.entity.enums.Enums.BusinessUnit;
@@ -17,7 +16,13 @@ import com.kanini.springer.entity.enums.Enums.BusinessUnit;
  * Demand collected from each practices before hiring
  */
 @Entity
-@Table(name = "hiring_demand")
+@Table(name = "hiring_demand",
+    indexes = {
+
+        @Index(name = "idx_demand_business_unit", columnList = "businessUnit"),
+    
+    }
+)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -38,8 +43,8 @@ public class HiringDemand {
     
     private String compensationBand; // predefined bands
     
-    @Lob
-    private byte[] jobDescription; // JD text or link OR PDF
+    @Column(columnDefinition = "TEXT")
+    private String jobDescription; // Job description or requirements as text
     
     @Enumerated(EnumType.STRING)
     private ApprovalStatus approvalStatus;
@@ -50,14 +55,19 @@ public class HiringDemand {
     
     private LocalDateTime createdAt;
     
+    private LocalDateTime updatedAt;
+    
     @OneToMany(mappedBy = "demand", cascade = CascadeType.ALL)
     private List<RequisitionSkill> requisitionSkills;
     
-    @OneToMany(mappedBy = "demand", cascade = CascadeType.ALL)
-    private List<Drive> drives;
     
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
+    }
+    
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = LocalDateTime.now();
     }
 }

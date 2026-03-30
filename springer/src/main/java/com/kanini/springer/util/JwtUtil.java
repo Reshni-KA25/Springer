@@ -4,6 +4,8 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
@@ -11,6 +13,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+
 /*
 Creates tokens when user logs in
 Validates tokens on each request
@@ -18,27 +21,31 @@ Extracts user info from tokens
  */
 @Component
 public class JwtUtil {
-    
-    // Generate a secure key for HS256
-    private final SecretKey SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-    
-    // Token validity: 24 hours
-    private static final long JWT_TOKEN_VALIDITY = 24 * 60 * 60 * 1000;
-    
+
+    @Value("${jwt.secret}")
+    private String secret;
+
+    @Value("${jwt.expiration}")
+    private long jwtExpiration;
+
+    private SecretKey getSigningKey() {
+        return Keys.hmacShaKeyFor(secret.getBytes());
+    }
+
     /**
      * Extract username (email) from token
      */
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
-    
+
     /**
      * Extract expiration date from token
      */
     public Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
     }
-    
+
     /**
      * Extract specific claim from token
      */
@@ -46,25 +53,25 @@ public class JwtUtil {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
-    
+
     /**
      * Extract all claims from token
      */
     private Claims extractAllClaims(String token) {
         return Jwts.parser()
-                .setSigningKey(SECRET_KEY)
+                .setSigningKey(getSigningKey())
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
     }
-    
+
     /**
      * Check if token is expired
      */
     private Boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
-    
+
     /**
      * Generate token for user
      */
@@ -74,7 +81,7 @@ public class JwtUtil {
         claims.put("roleName", roleName);
         return createToken(claims, email);
     }
-    
+
     /**
      * Create token with claims and subject
      */
@@ -83,11 +90,11 @@ public class JwtUtil {
                 .setClaims(claims)
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY))
-                .signWith(SECRET_KEY, SignatureAlgorithm.HS256)
+                .setExpiration(new Date(System.currentTimeMillis() + jwtExpiration))
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
-    
+
     /**
      * Validate token
      */

@@ -15,7 +15,14 @@ import com.kanini.springer.entity.enums.Enums.AuditAction;
  * The track and monitor the audits of each action
  */
 @Entity
-@Table(name = "audit_trail")
+@Table(name = "audit_trail",
+    indexes = {
+        @Index(name = "idx_audit_entity_type", columnList = "entityType"),
+        @Index(name = "idx_audit_action", columnList = "action"),
+        @Index(name = "idx_audit_updated_by", columnList = "updated_by")
+      
+    }
+)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -34,10 +41,9 @@ public class AuditTrail {
     private AuditAction action;
     
     @Column(columnDefinition = "JSON")
-    private String oldValue;
+    private String changes;
     
-    @Column(columnDefinition = "JSON")
-    private String newValue;
+    
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "updated_by")

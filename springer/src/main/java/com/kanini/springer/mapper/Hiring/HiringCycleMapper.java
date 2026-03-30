@@ -12,6 +12,9 @@ public class HiringCycleMapper {
         response.setCycleId(cycle.getCycleId());
         response.setCycleYear(cycle.getCycleYear());
         response.setCycleName(cycle.getCycleName());
+        response.setCompensationBand(cycle.getCompensationBand());
+        response.setBudget(cycle.getBudget());
+        response.setHasJd(cycle.getJd() != null && cycle.getJd().length > 0);
         response.setStatus(cycle.getStatus().toString());
         response.setCreatedAt(cycle.getCreatedAt());
         return response;

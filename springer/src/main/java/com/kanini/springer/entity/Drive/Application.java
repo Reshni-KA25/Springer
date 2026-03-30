@@ -16,7 +16,15 @@ import com.kanini.springer.entity.enums.Enums.ApplicationStatus;
  * are verified by the registration_code sent to their email
  */
 @Entity
-@Table(name = "applications")
+@Table(name = "applications",
+    indexes = {
+        @Index(name = "idx_app_drive_id", columnList = "drive_id"),
+     
+        @Index(name = "idx_app_status", columnList = "applicationStatus"),
+       
+    }
+    
+)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

@@ -9,7 +9,8 @@ import lombok.NoArgsConstructor;
  * Contains all the email templates used in the app
  */
 @Entity
-@Table(name = "email_templates")
+@Table(name = "email_templates"
+)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

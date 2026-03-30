@@ -15,7 +15,13 @@ import com.kanini.springer.entity.enums.Enums.OfferResponse;
  * After the doc is approved the offer for each candidate is rolled out and response is stored
  */
 @Entity
-@Table(name = "offer_letters")
+@Table(name = "offer_letters",
+    indexes = {
+        @Index(name = "idx_offer_candidate_id", columnList = "candidate_id"),
+        @Index(name = "idx_offer_cycle_id", columnList = "cycle_id"),
+    
+    }
+)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

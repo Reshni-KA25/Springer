@@ -1,5 +1,5 @@
-/* Assumes these exist globally:
-:root { --primary-color; --primary-hover; --secondary-color; --secondary-hover; --bg-color; --text-color; --card-bg; --card-border; --card-shadow; }
+/* Login page uses global CSS variables from App.css:
+:root { --color-primary; --color-primary-hover; --color-accent; --color-bg; --color-text; --color-surface; --color-border; --shadow-card; }
 [data-theme="dark"] { ... }
 */
 
@@ -15,24 +15,24 @@
   
   background: radial-gradient(
       1200px 800px at 20% 10%,
-      color-mix(in srgb, var(--primary-color) 22%, transparent),
+      color-mix(in srgb, var(--color-primary) 22%, transparent),
       transparent 60%
     ),
     radial-gradient(
       1000px 700px at 90% 20%,
-      color-mix(in srgb, var(--secondary-color) 16%, transparent),
+      color-mix(in srgb, var(--color-accent) 16%, transparent),
       transparent 55%
     ),
-    var(--background-color);
+    var(--color-bg);
 }
 
 .login-overlay-card {
   width: min(930px, 100%);
   min-height: 450px;
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
   border-radius: 18px;
-  box-shadow: var(--card-shadow);
+  box-shadow: var(--shadow-card);
   overflow: hidden;
 
   display: grid;
@@ -44,11 +44,11 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background: color-mix(in srgb, var(--card-bg) 92%, white);
+  background: color-mix(in srgb, var(--color-surface) 92%, white);
 }
 
 [data-theme="dark"] .login-left {
-  background: color-mix(in srgb, var(--card-bg) 92%, black);
+  background: color-mix(in srgb, var(--color-surface) 92%, black);
 }
 
 .login-brand {
@@ -56,14 +56,14 @@
 }
 
 .login-title {
-  color: var(--text-color) !important;
+  color: var(--color-text) !important;
   font-weight: 800 !important;
   letter-spacing: -0.02em;
   margin: 0;
 }
 
 .login-subtitle {
-  color: color-mix(in srgb, var(--text-color) 65%, transparent) !important;
+  color: color-mix(in srgb, var(--color-text) 65%, transparent) !important;
   margin-top: 6px !important;
 }
 
@@ -92,29 +92,29 @@
 }
 
 .login-field .MuiInputBase-root {
-  background: color-mix(in srgb, var(--background-color) 65%, transparent);
+  background: color-mix(in srgb, var(--color-bg) 65%, transparent);
   border-radius: 12px;
 }
 
 .login-field .MuiOutlinedInput-notchedOutline {
-  border-color: color-mix(in srgb, var(--card-border) 75%, transparent);
+  border-color: color-mix(in srgb, var(--color-border) 75%, transparent);
 }
 
 .login-field .MuiInputBase-root.Mui-focused .MuiOutlinedInput-notchedOutline {
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--primary-color) 18%, transparent);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-primary) 18%, transparent);
 }
 
 .login-field label {
-  color: color-mix(in srgb, var(--text-color) 60%, transparent);
-  background: var(--card-bg);
+  color: color-mix(in srgb, var(--color-text) 60%, transparent);
+  background: var(--color-surface);
   padding: 0 5px;
   z-index: 1;
 }
 
 .login-field label.Mui-focused {
-  color: var(--primary-color);
-  background: var(--card-bg);
+  color: var(--color-primary);
+  background: var(--color-surface);
 }
 
 /* Error alert styling */
@@ -127,9 +127,9 @@
 
 .login-error {
   width: 100%;
-  border-color: color-mix(in srgb, var(--secondary-color) 65%, transparent) !important;
-  color: var(--secondary-color) !important;
-  background: color-mix(in srgb, var(--secondary-color) 10%, transparent) !important;
+  border-color: color-mix(in srgb, var(--color-danger) 65%, transparent) !important;
+  color: var(--color-danger) !important;
+  background: color-mix(in srgb, var(--color-danger) 10%, transparent) !important;
   border-radius: 12px !important;
   padding: 10px 12px !important;
   font-size: 14px !important;
@@ -148,7 +148,7 @@
 }
 
 .login-error .MuiAlert-icon {
-  color: var(--secondary-color) !important;
+  color: var(--color-danger) !important;
 }
 
 .login-error .MuiAlert-action {
@@ -157,12 +157,12 @@
 }
 
 .login-error .MuiIconButton-root {
-  color: var(--secondary-color) !important;
+  color: var(--color-danger) !important;
   padding: 4px !important;
 }
 
 .login-error .MuiIconButton-root:hover {
-  background: color-mix(in srgb, var(--secondary-color) 15%, transparent) !important;
+  background: color-mix(in srgb, var(--color-danger) 15%, transparent) !important;
 }
 
 .login-submit {
@@ -171,11 +171,11 @@
   padding: 12px 14px !important;
   font-weight: 700 !important;
   text-transform: none !important;
-  background: var(--primary-color) !important;
+  background: var(--color-primary) !important;
 }
 
 .login-submit:hover {
-  background: var(--primary-hover) !important;
+  background: var(--color-primary-hover) !important;
 }
 
 .login-btn-loading {
@@ -191,7 +191,7 @@
 .login-footer {
   margin-top: 10px !important;
   text-align: center;
-  color: color-mix(in srgb, var(--text-color) 55%, transparent) !important;
+  color: color-mix(in srgb, var(--color-text) 55%, transparent) !important;
 }
 
 /* Right side image panel */
@@ -211,8 +211,8 @@
   inset: 0;
   background: linear-gradient(
     135deg,
-    color-mix(in srgb, var(--primary-color) 40%, transparent),
-    color-mix(in srgb, var(--secondary-color) 22%, transparent)
+    color-mix(in srgb, var(--color-primary) 40%, transparent),
+    color-mix(in srgb, var(--color-accent) 22%, transparent)
   );
   opacity: 0.35;
 }

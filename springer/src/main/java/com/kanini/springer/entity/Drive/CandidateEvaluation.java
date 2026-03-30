@@ -14,7 +14,12 @@ import com.kanini.springer.entity.enums.Enums.EvaluationStatus;
  * For each candidate for each round score,review,.. are entered here
  */
 @Entity
-@Table(name = "candidates_evaluations")
+@Table(name = "candidates_evaluations",
+    indexes = {
+        @Index(name = "idx_eval_application_id", columnList = "application_id"),
+        @Index(name = "idx_eval_round_config_id", columnList = "round_config_id"),
+        }
+)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

@@ -1,0 +1,241 @@
+.add-institute-container {
+  padding: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Header */
+.add-institute-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.add-institute-header .back-btn {
+  color: var(--color-primary);
+}
+
+.add-institute-header .back-btn:hover {
+  background-color: color-mix(in srgb, var(--color-primary) 10%, transparent);
+}
+
+/* Action Buttons Card */
+.add-institute-action-card {
+  margin-bottom: 24px;
+  border-radius: 12px;
+  box-shadow: var(--shadow-card);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+}
+
+.add-institute-actions-container {
+  display: flex;
+  justify-content: space-around;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.add-institute-action-btn {
+  flex: 1;
+  min-width: 180px;
+  padding: 12px 24px;
+  border-radius: 8px;
+  text-transform: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.add-institute-add-btn {
+  background: var(--color-primary) !important;
+  color: white !important;
+}
+
+.add-institute-add-btn:hover {
+  background: var(--color-primary-hover) !important;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-card);
+}
+
+.add-institute-upload-btn {
+  background: var(--color-primary) !important;
+  color: white !important;
+}
+
+.add-institute-upload-btn:hover {
+  background: var(--color-primary-hover) !important;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-card);
+}
+
+.add-institute-download-btn {
+  border: 2px solid var(--color-accent);
+  color: var(--color-accent);
+  background: transparent;
+}
+
+.add-institute-download-btn:hover {
+  background: var(--color-accent);
+  color: var(--color-bg);
+  transform: translateY(-2px);
+}
+
+/* Bulk Data Card */
+.add-institute-bulk-card {
+  border-radius: 12px;
+  box-shadow: var(--shadow-card);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+}
+
+.add-institute-bulk-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.add-institute-bulk-upload-btn {
+  background: var(--color-primary);
+  color: white;
+  padding: 10px 24px;
+  border-radius: 8px;
+  text-transform: none;
+  font-weight: 600;
+}
+
+.add-institute-bulk-upload-btn:hover {
+  background: var(--color-primary-hover);
+}
+
+.add-institute-bulk-upload-btn:disabled {
+  background: var(--color-text-muted) !important;
+  color: var(--color-bg) !important;
+  cursor: not-allowed !important;
+  opacity: 0.6;
+}
+
+/* Bulk Table */
+.add-institute-bulk-table {
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.bulk-table-container .table-header {
+  background: var(--color-primary);
+  color: white;
+  font-weight: 600;
+  padding: 12px 16px;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.add-institute-bulk-table tbody tr {
+  transition: background-color 0.2s ease;
+}
+
+.bulk-table-container tbody tr:hover {
+  background-color: var(--color-bg);
+}
+
+.bulk-table-container tbody td {
+  padding: 12px 16px;
+  color: var(--color-text);
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* Duplicate Name Indicator */
+.duplicate-name-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.warning-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--color-warning);
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.duplicate-name-text {
+  color: var(--color-warning);
+  font-weight: 600;
+}
+
+/* Bulk Action Buttons */
+.bulk-delete-btn {
+  color: var(--color-danger) !important;
+  border: 1px solid var(--color-border) !important;
+}
+
+.bulk-delete-btn:hover {
+  background-color: var(--color-danger) !important;
+  color: white !important;
+}
+
+/* Add Form Dialog */
+.add-institute-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 16px;
+}
+
+.add-institute-form .MuiTextField-root,
+.add-institute-form .MuiFormControl-root {
+  background: var(--color-bg);
+  border-radius: 8px;
+}
+
+.add-institute-form .MuiInputLabel-root {
+  color: var(--color-text);
+}
+
+.add-institute-form .MuiInputBase-input {
+  color: var(--color-text);
+}
+
+.add-institute-form .MuiOutlinedInput-notchedOutline {
+  border-color: var(--color-border);
+}
+
+.add-institute-form .MuiInputBase-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: var(--color-primary);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .add-institute-container {
+    padding: 16px;
+  }
+
+  .add-institute-actions-container {
+    flex-direction: column;
+  }
+
+  .add-institute-action-btn {
+    min-width: 100%;
+  }
+
+  .add-institute-bulk-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .add-institute-bulk-upload-btn {
+    width: 100%;
+  }
+
+  .add-institute-bulk-table {
+    max-height: 400px;
+  }
+}
