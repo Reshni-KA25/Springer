@@ -8,7 +8,6 @@ import org.hibernate.type.descriptor.jdbc.VarbinaryJdbcType;
 import java.sql.Types;
 
 /**
- * Custom SQLite dialect that remaps BLOB -> VARBINARY.
  *
  * The SQLite JDBC driver does not implement getBlob() / getBinaryStream(),
  * so @Lob byte[] fields (HiringCycle.jd, BatchAllocation.image,
