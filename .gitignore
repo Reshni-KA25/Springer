@@ -1,0 +1,29 @@
+# Node
+node_modules/
+
+# Electron build output
+dist/
+
+# Bundled JRE (too large for Git — see README for setup instructions)
+jre/
+
+# Spring Boot JAR (too large for Git — build from source)
+backend/springer.jar
+
+# SQLite database (runtime data, not source)
+database.db
+
+# Electron builder cache & logs
+dist/builder-debug.yml
+dist/builder-effective-config.yaml
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# VS Code
+.vscode/
+
+# Logs
+*.log
+npm-debug.log*
