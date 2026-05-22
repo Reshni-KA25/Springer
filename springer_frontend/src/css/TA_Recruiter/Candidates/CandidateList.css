@@ -171,7 +171,7 @@
 }
 
 .candidates-content--filter-open .cl-drive-select .MuiOutlinedInput-root {
-  width: 148px !important;
+  width: 220px !important;
 }
 
 .candidates-content--filter-open .cl-status-select .MuiOutlinedInput-root {
@@ -259,7 +259,7 @@
   background: var(--color-filter-bg) !important;
   font-size: var(--text-sm) !important;
   height: 36px !important;
-  width: 156px !important;
+  width: 260px !important;
 }
 .cl-drive-select .MuiOutlinedInput-notchedOutline {
   border: none !important;
@@ -349,6 +349,16 @@
   font-weight: 600;
 }
 
+.cl-dropdown-paper .MuiMenuItem-root.cl-status-danger {
+  color: var(--color-error-delete) !important;
+}
+
+.cl-dropdown-paper .MuiMenuItem-root.cl-status-danger:hover,
+.cl-dropdown-paper .MuiMenuItem-root.cl-status-danger.Mui-selected,
+.cl-dropdown-paper .MuiMenuItem-root.cl-status-danger.Mui-selected:hover {
+  color: var(--color-error-delete) !important;
+}
+
 /* Update button */
 .cl-update-btn {
   display: flex;
@@ -435,6 +445,16 @@
 .drive-mode-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
 .drive-mode-dot.oncampus  { background-color: var(--color-oncampus); }
 .drive-mode-dot.offcampus { background-color: var(--color-offcampus); }
+
+.cl-dropdown-paper .MuiMenuItem-root.drive-option-past {
+  color: var(--color-error-delete) !important;
+}
+
+.cl-dropdown-paper .MuiMenuItem-root.drive-option-past:hover,
+.cl-dropdown-paper .MuiMenuItem-root.drive-option-past.Mui-selected,
+.cl-dropdown-paper .MuiMenuItem-root.drive-option-past.Mui-selected:hover {
+  color: var(--color-error-delete) !important;
+}
 
 /* ══════════════════════════════════════
    TABLE WRAPPER — separated from toolbar

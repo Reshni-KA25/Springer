@@ -65,7 +65,7 @@ public class SecurityConfig {
              "http://localhost:8080",  // Swagger UI
             "http://localhost:5173",  // Vite React
             "http://localhost:5174",  // Vite React (fallback port)
-        
+            "null",                   // Electron file:// origin
             "https://*.vercel.app",
             "https://*.up.railway.app"
         ));

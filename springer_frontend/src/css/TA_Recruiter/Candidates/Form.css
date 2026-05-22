@@ -8,6 +8,35 @@
 
 }
 
+/* Registration form overlay (desktop app mode) */
+.form-preview-overlay-paper {
+  background-color: var(--color-bg-secondary) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  height: 100vh !important;
+  overflow: hidden !important;
+}
+
+.form-preview-overlay-toolbar {
+  flex-shrink: 0;
+  background-color: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  padding: 10px 20px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.form-preview-overlay-scroll {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Override 100vh min-height when the public form is inside the overlay */
+.form-preview-overlay-scroll .public-reg-container {
+  min-height: unset;
+}
+
 /* Header Card */
 .form-header-card {
   display: flex;

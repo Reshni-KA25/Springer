@@ -114,12 +114,7 @@ const UploadONCampus: React.FC<UploadONCampusProps> = ({
     <Box className="oncampus-wrapper">
       {/* Drive/Institute meta + controls row */}
       <Box className="oncampus-top-row">
-        <Box className="oncampus-meta-row">
-          {(cycleName || cycleYear) && (
-            <Typography className="oncampus-meta-chip">
-              {cycleName ? `${cycleName}${cycleYear ? ` - ${cycleYear}` : ""}` : cycleYear}
-            </Typography>
-          )}
+        <Box className="oncampus-meta-row">       
 
           {driveName && <Typography className="oncampus-meta-chip">{driveName}</Typography>}
           <Typography className="oncampus-meta-chip">

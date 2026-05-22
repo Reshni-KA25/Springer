@@ -1,5 +1,4 @@
-﻿import Cookies from "js-cookie";
-import type { AuthUser } from "../types/auth.types";
+﻿import type { AuthUser } from "../types/auth.types";
 import type { CandidateFilters } from "../types/TA_Recruiter/Drive/candidate.types";
 import type { InstituteFilters } from "../types/TA_Recruiter/Hiring/institute.types";
 
@@ -9,29 +8,21 @@ const THEME_KEY = "theme";
 const CANDIDATE_FILTERS_KEY = "savedCandidateFilters";
 const SIDEBAR_STATE_KEY = "sidebarOpen";
 
-/** sameSite=strict: browser won't send cookies on cross-site requests (CSRF mitigation) */
-const AUTH_COOKIE_OPTIONS: Cookies.CookieAttributes = {
-  expires: 7,
-  sameSite: "strict",
-  secure: window.location.protocol === "https:",
-  path: "/",
-};
-
 export const tokenstore = {
   getToken() {
-    return Cookies.get(TOKEN_KEY) || null;
+    return localStorage.getItem(TOKEN_KEY) || null;
   },
 
   setToken(token: string) {
-    Cookies.set(TOKEN_KEY, token, AUTH_COOKIE_OPTIONS);
+    localStorage.setItem(TOKEN_KEY, token);
   },
 
   setUser(user: AuthUser) {
-    Cookies.set(CUSTOMER_KEY, JSON.stringify(user), AUTH_COOKIE_OPTIONS);
+    localStorage.setItem(CUSTOMER_KEY, JSON.stringify(user));
   },
 
   getUser(): AuthUser | null {
-    const data = Cookies.get(CUSTOMER_KEY);
+    const data = localStorage.getItem(CUSTOMER_KEY);
     return data ? JSON.parse(data) : null;
   },
 
@@ -44,8 +35,8 @@ export const tokenstore = {
   },
 
   clear() {
-    Cookies.remove(TOKEN_KEY);
-    Cookies.remove(CUSTOMER_KEY);
+    localStorage.removeItem(TOKEN_KEY);
+    localStorage.removeItem(CUSTOMER_KEY);
   },
 
   // Candidate Filters (SessionStorage)

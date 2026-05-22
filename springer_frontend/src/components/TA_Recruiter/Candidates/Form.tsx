@@ -28,6 +28,7 @@ import QrCode2Icon from "@mui/icons-material/QrCode2";
 import DeleteIcon from "@mui/icons-material/Delete";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import ErrorOverlay from "../../Common/ErrorOverlay";
+import PublicCandidateRegistration from "./PublicCandidateRegistration";
 // Commented out - header not displayed
 // import AddIcon from "@mui/icons-material/Add";
 // import BackButton from "../../Common/BackButton";
@@ -231,16 +232,20 @@ const Form: React.FC<{ onAddFormClick?: () => void }> = ({ onAddFormClick }) => 
     }
   };
 
+  const [previewFormId, setPreviewFormId] = useState<number | null>(null);
+
   const generateFormLink = (form: FormResponse) => {
     const formattedDriveName = driveName?.replace(/\s+/g, "-") || "drive";
     const formattedFormName = form.formName.replace(/\s+/g, "-");
-    return `${window.location.origin}/kanini-reg/${formattedDriveName}/${formattedFormName}/${form.formId}`;
+    return `${window.location.origin}/#/kanini-reg/${formattedDriveName}/${formattedFormName}/${form.formId}`;
   };
 
   const handleOpenForm = (form: FormResponse) => {
-    const formattedDriveName = driveName?.replace(/\s+/g, "-") || "drive";
-    const formattedFormName = form.formName.replace(/\s+/g, "-");
-    window.open(`/kanini-reg/${formattedDriveName}/${formattedFormName}/${form.formId}`, "_blank");
+    if (window.location.protocol === "file:") {
+      setPreviewFormId(form.formId);
+    } else {
+      window.open(generateFormLink(form), "_blank");
+    }
   };
 
   const handleCopyLink = (form: FormResponse) => {
@@ -1012,6 +1017,31 @@ const Form: React.FC<{ onAddFormClick?: () => void }> = ({ onAddFormClick }) => 
             {loading ? "Deleting..." : "OK"}
           </Button>
         </DialogActions>
+      </Dialog>
+
+      {/* Registration form overlay — works fully (submit etc.) when running as desktop app */}
+      <Dialog
+        open={previewFormId !== null}
+        onClose={() => setPreviewFormId(null)}
+        fullScreen
+        PaperProps={{ className: "form-preview-overlay-paper" }}
+      >
+        <Box className="form-preview-overlay-toolbar">
+          <Button
+            onClick={() => setPreviewFormId(null)}
+            className="g-btn g-btn-outline-primary"
+          >
+            ✕ Close
+          </Button>
+        </Box>
+        <Box className="form-preview-overlay-scroll">
+          {previewFormId !== null && (
+            <PublicCandidateRegistration
+              formIdOverride={previewFormId}
+              driveNameOverride={driveName}
+            />
+          )}
+        </Box>
       </Dialog>
     </Box>
   );

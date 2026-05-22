@@ -10,6 +10,10 @@
   transition: all 0.2s ease !important;
 }
 
+.schedule-drive-btn.schedule-drive-btn--active {
+  color: var(--color-primary) !important;
+}
+
 .schedule-drive-btn:hover {
   background: var(--color-grey-200) !important;
   color: var(--color-primary) !important;
@@ -231,16 +235,8 @@
 }
 
 .schedule-drive-confirm-btn {
-  background-color: var(--color-sidebar-active-bg) !important;
-  color: var(--color-white) !important;
   border-radius: 8px !important;
-  text-transform: none !important;
-  font-weight: 600 !important;
   padding: 8px 24px !important;
-}
-
-.schedule-drive-confirm-btn:hover {
-  opacity: 0.9;
 }
 
 .schedule-drive-confirm-btn:disabled {

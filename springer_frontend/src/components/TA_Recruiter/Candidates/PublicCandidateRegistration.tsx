@@ -175,12 +175,23 @@ function validateAll(
 }
 
 // ─── Component ────────────────────────────────────────────────────────────────
-const PublicCandidateRegistration: React.FC = () => {
-  const { driveName, formId } = useParams<{
+interface PublicCandidateRegistrationProps {
+  formIdOverride?: number;
+  driveNameOverride?: string;
+}
+
+const PublicCandidateRegistration: React.FC<PublicCandidateRegistrationProps> = ({
+  formIdOverride,
+  driveNameOverride,
+}) => {
+  const params = useParams<{
     driveName: string;
     formName: string;
     formId: string;
   }>();
+
+  const formId = formIdOverride !== undefined ? String(formIdOverride) : params.formId;
+  const driveName = driveNameOverride ?? params.driveName;
 
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);

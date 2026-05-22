@@ -71,6 +71,21 @@ const getInitials = (name: string): string => {
   return (words[0][0] + words[1][0]).toUpperCase();
 };
 
+const isPastDriveDate = (startDate?: string): boolean => {
+  if (!startDate) return false;
+
+  const [year, month, day] = startDate.split('-').map(Number);
+  if (!year || !month || !day) return false;
+
+  const driveDate = new Date(year, month - 1, day);
+  driveDate.setHours(0, 0, 0, 0);
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  return driveDate < today;
+};
+
 const ChevronIcon = () => (
   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ position: 'absolute', right: 8, pointerEvents: 'none' }}>
     <path d="M4 6L8 10L12 6" stroke="var(--color-filter-arrow)" strokeWidth="1.33" strokeLinecap="round" strokeLinejoin="round"/>
@@ -189,6 +204,16 @@ const CandidateList: React.FC = () => {
       driveId: selectedDrive || undefined,
     }),
     [filters, selectedDrive]
+  );
+
+  const selectedDriveData = React.useMemo(
+    () => drives.find((drive) => drive.driveId === selectedDrive),
+    [drives, selectedDrive]
+  );
+
+  const isSelectedDrivePast = React.useMemo(
+    () => isPastDriveDate(selectedDriveData?.startDate),
+    [selectedDriveData]
   );
 
   const toggleSidebar = () => {
@@ -620,7 +645,11 @@ const CandidateList: React.FC = () => {
                   >
                     <MenuItem value="">All Drives</MenuItem>
                     {drives.map((drive) => (
-                      <MenuItem key={drive.driveId} value={drive.driveId}>
+                      <MenuItem
+                        key={drive.driveId}
+                        value={drive.driveId}
+                        className={isPastDriveDate(drive.startDate) ? 'drive-option-past' : ''}
+                      >
                         <Box className="drive-option">
                           <span className={`drive-mode-dot ${drive.mode === "ON_CAMPUS" ? "oncampus" : "offcampus"}`} />
                           {drive.driveName}
@@ -646,7 +675,7 @@ const CandidateList: React.FC = () => {
                       <MenuItem value="">Update Status</MenuItem>
                       <MenuItem value="SHORTLISTED">SHORTLISTED</MenuItem>
                 
-                      <MenuItem value="CLOSED" sx={{ color: 'var(--color-error-delete)' }}>MOVE TO HISTORY</MenuItem>
+                      <MenuItem value="CLOSED" className="cl-status-danger">MOVE TO HISTORY</MenuItem>
                     </Select>
                   </FormControl>
                   <button
@@ -684,6 +713,7 @@ const CandidateList: React.FC = () => {
                   <ScheduleDrive
                     cycleId={selectedCycle}
                     driveId={selectedDrive || null}
+                    isPastDrive={isSelectedDrivePast}
                     candidateIds={selectMode ? Array.from(selectedCandidates) : []}
                     selectMode={selectMode}
                     selectedCount={selectedCandidates.size}

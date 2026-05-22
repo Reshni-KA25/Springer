@@ -23,8 +23,9 @@ public interface LeaveRequestRepository extends JpaRepository<LeaveRequest, Long
     List<LeaveRequest> findByStudent_Program_ProgramIdAndStudent_BatchNumberOrderByAppliedAtDesc(
             Integer programId, Integer batchNumber);
 
-    @Query("SELECT COALESCE(SUM(DATEDIFF(l.toDate, l.fromDate) + 1), 0) FROM LeaveRequest l " +
-           "WHERE l.student.studentId = :studentId AND l.status = 'APPROVED'")
+    @Query(value = "SELECT COALESCE(SUM(CAST(julianday(to_date) - julianday(from_date) + 1 AS INTEGER)), 0) " +
+                   "FROM leave_requests " +
+                   "WHERE student_id = :studentId AND status = 'APPROVED'", nativeQuery = true)
     Integer sumApprovedLeaveDays(@Param("studentId") Long studentId);
 
     // Check for overlapping leave (PENDING or APPROVED) for the same student

@@ -1,5 +1,5 @@
 import { createRoot } from 'react-dom/client'
-import { BrowserRouter } from 'react-router-dom'
+import { HashRouter } from 'react-router-dom'
 import { SnackbarProvider, closeSnackbar } from 'notistack'
 import { ThemeProvider as MuiThemeProvider, CssBaseline, createTheme, StyledEngineProvider } from '@mui/material'
 import { FilterOptionsProvider } from './contexts/FilterOptionsContext'
@@ -17,7 +17,7 @@ const muiTheme = createTheme({
 });
 
 createRoot(document.getElementById('root')!).render(
-    <BrowserRouter>
+    <HashRouter>
       <StyledEngineProvider injectFirst>
         <MuiThemeProvider theme={muiTheme}>
           <CssBaseline />
@@ -50,5 +50,5 @@ createRoot(document.getElementById('root')!).render(
           </SnackbarProvider>
         </MuiThemeProvider>
       </StyledEngineProvider>
-    </BrowserRouter>
+    </HashRouter>
 )
